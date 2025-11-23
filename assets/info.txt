@@ -1,0 +1,2 @@
+map editor: https://www.spritefusion.com/editor
+tileset editor: https://www.gamedeveloperstudio.com/tools/tile_sheet_creator/tile_sheet_creator.php
