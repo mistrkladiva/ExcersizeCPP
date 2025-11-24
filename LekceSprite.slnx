@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="LekceSprite.vcxproj" />
+  <Project Path="LekceSprite.vcxproj" Id="e6829b01-fef6-4518-92f6-360f0cb6a918" />
 </Solution>

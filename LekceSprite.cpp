@@ -1,15 +1,8 @@
 ﻿
 #include <iostream>
-#include <string>
-#include <list>
-#include <SFML/Graphics.hpp>
-
-struct Character {
-    std::string name;
-	int frameRow = 0;
-	int frameCol = 0;
-    sf::IntRect textureArea;
-};
+//#include <SFML/Graphics.hpp>
+#include "Structs.h"
+#include "Player.h"
 
 int main()
 {
@@ -21,32 +14,10 @@ int main()
         return 0;
     }
 
-    Character playerSprt;
-	playerSprt = { "Hero", 3, 3, sf::IntRect(0, 0, 100,100) };
+    Structs::sprtCharacter playerSprt;
+	playerSprt = { "Hero", 4, 3, sf::IntRect(0, 400, 100,100) };
 
-
-    sf::Sprite sprite01;
-    sprite01.setTexture(charactestSpritesheet);
-    sprite01.setTextureRect(playerSprt.textureArea);
-    sprite01.setPosition(200, 200);
-
-    std::list<sf::Sprite> animation;
-
-    for (int row = 0; row < playerSprt.frameRow; row++)
-    {
-        for (int col = 0; col < playerSprt.frameCol; col++)
-        {
-            sf::Sprite sprite;
-            sprite.setTexture(charactestSpritesheet);
-            sprite.setTextureRect(sf::IntRect(col*100, row*100, playerSprt.textureArea.width, playerSprt.textureArea.height) );
-            sprite.setPosition((float)(col * 100), (float)(row * 100));
-			animation.push_back(sprite);
-        }
-    }
-
-    sf::RectangleShape rect(sf::Vector2f(100.f, 100.f));
-    rect.setFillColor(sf::Color::Red);
-    rect.setPosition(sf::Vector2f(100.f, 100.f));
+	Player player(&window, charactestSpritesheet, playerSprt);
 
     while (window.isOpen())
     {
@@ -58,12 +29,8 @@ int main()
         }
 
         window.clear(sf::Color::Black);
-        window.draw(rect);
-        window.draw(sprite01);
-
-		for (sf::Sprite& sprite : animation) {
-            window.draw(sprite);
-        }
+		player.update(3); // idle
+		player.draw();
 
         window.display();
     }
