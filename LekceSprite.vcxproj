@@ -134,18 +134,25 @@
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\characters2.png" />
     <Image Include="assets\garden.png" />
     <Image Include="assets\characters.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\map.json" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\info.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Globals.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Structs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LekceSprite.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

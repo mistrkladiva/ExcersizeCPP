@@ -32,10 +32,16 @@
     <Image Include="assets\characters.png">
       <Filter>Soubory zdrojů\assets</Filter>
     </Image>
+    <Image Include="assets\characters2.png">
+      <Filter>Soubory zdrojů\assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\map.json">
       <Filter>Soubory zdrojů\assets</Filter>
+    </None>
+    <None Include="README.md">
+      <Filter>Soubory zdrojů</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -50,5 +56,16 @@
     <ClInclude Include="Structs.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Zdrojové soubory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LekceSprite.rc">
+      <Filter>Soubory zdrojů</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
