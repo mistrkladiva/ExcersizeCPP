@@ -43,7 +43,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -70,6 +70,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ExternalIncludePath>C:\Programing\c++\vyukove-projekty\LekceSprite\include;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -130,17 +133,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="MapJsonParse.cpp" />
     <ClCompile Include="LekceSprite.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\characters2.png" />
     <Image Include="assets\garden.png" />
     <Image Include="assets\characters.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\map.json" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\info.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="MapJsonParse.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Structs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LekceSprite.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,6 +21,15 @@
     <ClCompile Include="LekceSprite.cpp">
       <Filter>Zdrojové soubory</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
+    <ClCompile Include="Globals.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
+    <ClCompile Include="MapJsonParse.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\garden.png">
@@ -29,15 +38,43 @@
     <Image Include="assets\characters.png">
       <Filter>Soubory zdrojů\assets</Filter>
     </Image>
+    <Image Include="assets\characters2.png">
+      <Filter>Soubory zdrojů\assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\map.json">
       <Filter>Soubory zdrojů\assets</Filter>
+    </None>
+    <None Include="README.md">
+      <Filter>Soubory zdrojů</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\info.txt">
       <Filter>Soubory zdrojů\assets</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Player.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="MapJsonParse.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LekceSprite.rc">
+      <Filter>Soubory zdrojů</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
