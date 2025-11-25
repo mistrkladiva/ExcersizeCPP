@@ -1,12 +1,18 @@
 ﻿
 #include <iostream>
-#include "Structs.h"
-#include "Globals.h"
 #include "Player.h"
+#include "MapJsonParse.h"
 
 int main()
 {
-	int playerSpriteDirection = 0; // idle= -1, down=0, right=1, up=2, left=3
+    MapData loaded_map = MapJsonParse::LoadMapFromJsonFile("assets/map.json");
+
+    if (loaded_map.layers.empty()) {
+        std::cout << "Načítání mapy selhalo nebo mapa je prázdná." << std::endl;
+        return 0;
+    }
+
+    Direction playerSpriteDirection = Direction::Down;
     sf::Vector2f playerDirection = {0,0};
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Simple c++ dop-down game");
@@ -22,7 +28,7 @@ int main()
 	playerSprt = { "Hero", 4, 4, sf::IntRect(0, 0, 100,100) };
 
 	Player player(&window, charactestSpritesheet, playerSprt);
-    player.update(playerSpriteDirection, playerDirection);
+    player.update((int)playerSpriteDirection, playerDirection);
     player.draw();
 
     while (window.isOpen())
@@ -35,28 +41,28 @@ int main()
         }
 
         // vstup z klávesnice
-        playerSpriteDirection = -1;
+        playerSpriteDirection = Direction::Idle;
         playerDirection = { 0,0 };
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            playerSpriteDirection = 3;
+            playerSpriteDirection = Direction::Left;
             playerDirection.x = -1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            playerSpriteDirection = 1;
+            playerSpriteDirection = Direction::Right;
             playerDirection.x = 1;
         };
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            playerSpriteDirection = 2;
+            playerSpriteDirection = Direction::Up;
             playerDirection.y = -1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            playerSpriteDirection = 0;
+            playerSpriteDirection = Direction::Down;
             playerDirection.y = 1;
         }
 
         window.clear(sf::Color::Black);
-		player.update(playerSpriteDirection, playerDirection);
+		player.update((int)playerSpriteDirection, playerDirection);
 		player.draw();
 
         window.display();
