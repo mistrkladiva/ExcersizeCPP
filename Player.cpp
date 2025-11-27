@@ -14,8 +14,12 @@ Player::Player(sf::RenderWindow* window, sf::Texture& spritesheet, SpriteCharact
 
 void Player::update(int direction, sf::Vector2f deltaPos)
 {
-	if (direction == -1)
+	
+	if (direction == -1) {
+		m_clock.restart();
 		return;
+	}
+		
 
 	if (direction != m_lastDirection) {
 		m_currentFrameIndex = 0;
@@ -29,12 +33,6 @@ void Player::update(int direction, sf::Vector2f deltaPos)
 
 void Player::draw()
 {
-	// vykreslíme všechny snímky pro kontrolu naètení
-	/*for (auto& frame : m_animation)
-	{
-		m_window->draw(frame);
-	}*/
-
 	m_window->draw(m_currentFrame);
 }
 
@@ -50,6 +48,13 @@ void Player::move(sf::Vector2f deltaPos)
 		m_playerPos.y + m_playerSpeed * deltaPos.y 
 	};
 
+	if (isCollision(newPos)) {
+		std::cout << "Kolize!\n";
+		m_currentFrame.setPosition(m_playerPos);
+		return;
+		
+	}
+
 	if (GAME_AREA.contains(newPos.x, newPos.y) &&
 		GAME_AREA.contains(newPos.x + 100, newPos.y + 100))
 	{
@@ -57,6 +62,46 @@ void Player::move(sf::Vector2f deltaPos)
 	}
 
 	m_currentFrame.setPosition(m_playerPos);
+}
+
+bool Player::isCollision(sf::Vector2f& playerPos)
+{
+	// Lokalní rozmìry sprite (width/height) - safe
+	sf::FloatRect local = m_currentFrame.getLocalBounds();
+	sf::Vector2f origin = m_currentFrame.getOrigin();
+
+	// Vypoèti AABB pro novou pozici (newPos je svìtová pozice, kterou chceš použít)
+	sf::FloatRect playerBound{
+		playerPos.x - origin.x,
+		playerPos.y - origin.y,
+		local.width,
+		local.height
+	};
+
+
+	//int leftTile = std::max(0, (int)std::floor(playerBound.left / tileSize));
+	//int rightTile = std::min(mapWidthInTiles - 1, (int)std::floor((playerBound.left + playerBound.width - 1) / tileSize));
+	//int topTile = std::max(0, (int)std::floor(playerBound.top / tileSize));
+	//int bottomTile = std::min(mapHeightInTiles - 1, (int)std::floor((playerBound.top + playerBound.height - 1) / tileSize));
+
+	//for (int ty = topTile; ty <= bottomTile; ++ty) {
+	//	for (int tx = leftTile; tx <= rightTile; ++tx) {
+	//		// získej index dlaždice (napø. ty * mapWidthInTiles + tx)
+	//		// nebo použij 2D pole booleanù `isColliderTile[ty][tx]`
+	//		if (isColliderTile[ty][tx]) {
+	//			sf::FloatRect tileRect(tx * tileSize, ty * tileSize, tileSize, tileSize);
+	//			if (playerBound.intersects(tileRect)) return true;
+	//		}
+	//	}
+	//}
+
+	// TODO: Použít spatial partitioning pro optimalizaci, pokud je potøeba
+	for (auto& collider : playerColliders) {
+		if (playerBound.intersects(collider)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 /// <summary>
@@ -71,13 +116,13 @@ void Player::loadCharacterSprites()
 	{
 		for (int col = 0; col < m_sprt.frameCol; col++)
 		{
-			int x = col * m_sprt.textureSize.width + m_sprt.textureSize.left;
-			int y = row * m_sprt.textureSize.height + m_sprt.textureSize.top;
+			int x = col * (int)m_sprt.textureSize.width ;
+			int y = row * (int)m_sprt.textureSize.height ;
 
 			sf::Sprite spr;
 			spr.setTexture(m_spritesheet);
-			spr.setTextureRect(sf::IntRect(x, y, m_sprt.textureSize.width, m_sprt.textureSize.height));
-
+			spr.setTextureRect(sf::IntRect(x, y, (int)m_sprt.textureSize.width, (int)m_sprt.textureSize.height));
+			spr.setOrigin(m_sprt.textureSize.width / 2, m_sprt.textureSize.height / 2);
 			m_frames[row].push_back(spr);
 		}
 	}

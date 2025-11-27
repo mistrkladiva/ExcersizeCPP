@@ -30,6 +30,9 @@
     <ClCompile Include="MapJsonParse.cpp">
       <Filter>Zdrojové soubory</Filter>
     </ClCompile>
+    <ClCompile Include="MapGenerator.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\garden.png">
@@ -41,9 +44,12 @@
     <Image Include="assets\characters2.png">
       <Filter>Soubory zdrojů\assets</Filter>
     </Image>
+    <Image Include="assets\map-level-01.png">
+      <Filter>Soubory zdrojů\assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\map.json">
+    <None Include="assets\map-level-01.json">
       <Filter>Soubory zdrojů\assets</Filter>
     </None>
     <None Include="README.md">
@@ -69,6 +75,9 @@
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
     <ClInclude Include="MapJsonParse.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="MapGenerator.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
   </ItemGroup>

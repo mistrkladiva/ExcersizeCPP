@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "Structs.h"
 #include "Globals.h"
 
@@ -7,6 +8,7 @@ class Player
 public:
 
 	int direction; // idle=0, left=1, right=2, up=3, down=4
+	sf::Vector2f m_playerPos = { WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 };
 	Player(sf::RenderWindow* window, sf::Texture& spritesheet, SpriteCharacter sprt);
 
 	void update(int direction, sf::Vector2f deltaPos);
@@ -31,12 +33,13 @@ private:
 	
 
 	// souøadnice pro pohyb
-	sf::Vector2f m_playerPos = {500.f, 500.f};
-	float m_playerSpeed = 0.1f;
+	
+	float m_playerSpeed = 2.5;
 
 
     void loadCharacterSprites();
 	void animation(int direction);
 	void move(sf::Vector2f deltaPos);
+	bool isCollision(sf::Vector2f& playerPos);
 };
 

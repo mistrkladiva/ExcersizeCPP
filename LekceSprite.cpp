@@ -2,34 +2,55 @@
 #include <iostream>
 #include "Player.h"
 #include "MapJsonParse.h"
+#include "MapGenerator.h"
 
 int main()
 {
-    MapData loaded_map = MapJsonParse::LoadMapFromJsonFile("assets/map.json");
+    MapData loaded_map = MapJsonParse::LoadMapFromJsonFile("assets/map-level-01.json");
 
     if (loaded_map.layers.empty()) {
         std::cout << "Načítání mapy selhalo nebo mapa je prázdná." << std::endl;
         return 0;
     }
 
-    Direction playerSpriteDirection = Direction::Down;
-    sf::Vector2f playerDirection = {0,0};
-
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Simple c++ dop-down game");
+    sf::RenderWindow window(sf::VideoMode((int)WINDOW_WIDTH, (int)WINDOW_HEIGHT), "Simple c++ dop-down game");
     window.clear(sf::Color::Black);
 
-    sf::Texture charactestSpritesheet;
-	if (!charactestSpritesheet.loadFromFile("assets/characters2.png")) {
+    window.setVerticalSyncEnabled(true);
+
+
+    sf::View view2;
+    view2.reset(sf::FloatRect(0, 0, 1024, 768));
+
+    //view2.move(0, -500);
+
+    sf::Texture mapLevel01Spritesheet;
+    if (!mapLevel01Spritesheet.loadFromFile("assets/map-level-01.png")) {
+        std::cerr << "Error loading character spritesheet!" << std::endl;
+        return 0;
+    }
+
+    sf::Texture charactersSpritesheet;
+	if (!charactersSpritesheet.loadFromFile("assets/characters2.png")) {
 		std::cerr << "Error loading character spritesheet!" << std::endl;
         return 0;
     }
 
-    SpriteCharacter playerSprt;
-	playerSprt = { "Hero", 4, 4, sf::IntRect(0, 0, 100,100) };
+	MapGenerator map01(&window, mapLevel01Spritesheet, loaded_map);
+    
 
-	Player player(&window, charactestSpritesheet, playerSprt);
+    Direction playerSpriteDirection = Direction::Down;
+    sf::Vector2f playerDirection = { 0,0 };
+    SpriteCharacter playerSprt;
+	playerSprt = { "Hero", 4, 4, sf::FloatRect(0, 0, 100,100) };
+
+	Player player(&window, charactersSpritesheet, playerSprt);
     player.update((int)playerSpriteDirection, playerDirection);
     player.draw();
+
+	sf::RectangleShape colliderRect;
+	colliderRect.setSize(sf::Vector2f(100.f, 100.f));
+	colliderRect.setPosition(100.f, 100.f);
 
     while (window.isOpen())
     {
@@ -62,8 +83,12 @@ int main()
         }
 
         window.clear(sf::Color::Black);
+        view2.setCenter(sf::Vector2f(player.m_playerPos));
+        window.setView(view2);
+        map01.drawMap();
 		player.update((int)playerSpriteDirection, playerDirection);
 		player.draw();
+        window.draw(colliderRect);
 
         window.display();
     }
