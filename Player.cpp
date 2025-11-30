@@ -19,7 +19,6 @@ void Player::update(int direction, sf::Vector2f deltaPos)
 		m_clock.restart();
 		return;
 	}
-		
 
 	if (direction != m_lastDirection) {
 		m_currentFrameIndex = 0;
@@ -31,10 +30,13 @@ void Player::update(int direction, sf::Vector2f deltaPos)
 	move(deltaPos);
 }
 
+// vykreslování hráèe øeší MapGenerator pøes referenci na m_currentFrame
 void Player::draw()
 {
 	m_window->draw(m_currentFrame);
 }
+
+
 
 /// <summary>
 /// Posune hráèe o zadaný vektor s uplatnìním rychlosti, omezí pohyb na povolenou herní oblast a aktualizuje pozici grafického rámce.
@@ -49,18 +51,17 @@ void Player::move(sf::Vector2f deltaPos)
 	};
 
 	if (isCollision(newPos)) {
-		std::cout << "Kolize!\n";
 		m_currentFrame.setPosition(m_playerPos);
 		return;
-		
 	}
 
-	if (GAME_AREA.contains(newPos.x, newPos.y) &&
+	/*if (GAME_AREA.contains(newPos.x, newPos.y) &&
 		GAME_AREA.contains(newPos.x + 100, newPos.y + 100))
 	{
 		m_playerPos = newPos;
-	}
+	}*/
 
+	m_playerPos = newPos;
 	m_currentFrame.setPosition(m_playerPos);
 }
 
@@ -71,36 +72,41 @@ bool Player::isCollision(sf::Vector2f& playerPos)
 	sf::Vector2f origin = m_currentFrame.getOrigin();
 
 	// Vypoèti AABB pro novou pozici (newPos je svìtová pozice, kterou chceš použít)
-	sf::FloatRect playerBound{
+	/*sf::FloatRect playerBound{
 		playerPos.x - origin.x,
 		playerPos.y - origin.y,
 		local.width,
 		local.height
+	};*/
+
+	sf::FloatRect playerBoxCollider{
+		playerPos.x - 20,
+		playerPos.y + 30,
+		50,
+		20
 	};
 
 
-	//int leftTile = std::max(0, (int)std::floor(playerBound.left / tileSize));
-	//int rightTile = std::min(mapWidthInTiles - 1, (int)std::floor((playerBound.left + playerBound.width - 1) / tileSize));
-	//int topTile = std::max(0, (int)std::floor(playerBound.top / tileSize));
-	//int bottomTile = std::min(mapHeightInTiles - 1, (int)std::floor((playerBound.top + playerBound.height - 1) / tileSize));
+	// TODO: pøidat reference na velikost dlaždice a rozmìry møížky
+	const int tileSize = 128;
 
-	//for (int ty = topTile; ty <= bottomTile; ++ty) {
-	//	for (int tx = leftTile; tx <= rightTile; ++tx) {
-	//		// získej index dlaždice (napø. ty * mapWidthInTiles + tx)
-	//		// nebo použij 2D pole booleanù `isColliderTile[ty][tx]`
-	//		if (isColliderTile[ty][tx]) {
-	//			sf::FloatRect tileRect(tx * tileSize, ty * tileSize, tileSize, tileSize);
-	//			if (playerBound.intersects(tileRect)) return true;
-	//		}
-	//	}
-	//}
+	int leftTile = std::max(0, (int)std::floor(playerBoxCollider.left / tileSize));
+	int rightTile = std::min(10 - 1, (int)std::floor((playerBoxCollider.left + playerBoxCollider.width) / tileSize));
+	int topTile = std::max(0, (int)std::floor(playerBoxCollider.top / tileSize));
+	int bottomTile = std::min(6 - 1, (int)std::floor((playerBoxCollider.top + playerBoxCollider.height) / tileSize));
 
-	// TODO: Použít spatial partitioning pro optimalizaci, pokud je potøeba
-	for (auto& collider : playerColliders) {
-		if (playerBound.intersects(collider)) {
-			return true;
+	for (int y = topTile; y <= bottomTile; ++y)
+	{
+		for (int x = leftTile; x <= rightTile; ++x)
+		{
+			if (!tileGrid[y][x].active)
+				continue;
+
+			if (playerBoxCollider.intersects(tileGrid[y][x].rect))
+				return true;
 		}
 	}
+
 	return false;
 }
 
@@ -142,4 +148,9 @@ void Player::animation(int direction)
 	}
 
 	m_currentFrame = m_frames[direction][m_currentFrameIndex];
+}
+
+sf::Sprite& Player::getCurrentFrame()
+{
+	return m_currentFrame;
 }

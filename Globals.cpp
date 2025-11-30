@@ -10,4 +10,4 @@ const sf::FloatRect GAME_AREA{
     WINDOW_HEIGHT - GAME_AREA_OFFSET * 2
 };
 
-std::vector<sf::FloatRect> playerColliders;
+extern std::vector<std::vector<TileCollider>> tileGrid = {};

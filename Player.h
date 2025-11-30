@@ -14,6 +14,8 @@ public:
 	void update(int direction, sf::Vector2f deltaPos);
 	void draw();
 	
+	sf::Sprite& getCurrentFrame();
+	
 
 private:
     sf::RenderWindow* m_window;
@@ -21,6 +23,7 @@ private:
 	SpriteCharacter m_sprt; // definice výøezu ve spritesheetu
 
 	std::vector<std::vector<sf::Sprite>> m_frames;
+	
 	sf::Sprite m_currentFrame;
 	int m_currentFrameIndex = 0;
 
@@ -30,12 +33,7 @@ private:
 	float m_frameDuration = 0.10f; // seconds per frame, nastavte podle potøeby
 	int m_lastDirection = -2; // pomocné pro zjištìní zmìny smìru
 
-	
-
-	// souøadnice pro pohyb
-	
-	float m_playerSpeed = 2.5;
-
+	float m_playerSpeed = 3;
 
     void loadCharacterSprites();
 	void animation(int direction);

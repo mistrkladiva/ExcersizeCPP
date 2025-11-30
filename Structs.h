@@ -26,6 +26,15 @@ enum class Direction {
 	Idle = -1
 };
 
+struct TileCollider {
+    bool active = false;
+    sf::FloatRect rect;
+    int type;            // 0 = nic, 1 = wall, 2 = trap, 3 = building...
+    // nebo tøeba enum
+};
+
+
+// Definice struktur pro mapu a jejich serializaci pomocí nlohmann::json
 
 // Užiteèný alias pro mapu atributù, kde klíè i hodnota jsou stringy
 using Attributes = std::map<std::string, std::string>;
@@ -36,7 +45,6 @@ struct Tile {
     int x;
     int y;
     // Pole 'attributes' je volitelné, pokud se v JSON nevyskytuje, bude mapa prázdná
-    //Attributes attributes;
 	std::optional<Attributes> attributes;
 };
 
@@ -53,9 +61,6 @@ inline void from_json(const nlohmann::json& j, Tile& t)
         t.attributes = std::nullopt;
     }
 }
-
-// Makro pro automatickou serializaci/deserializaci struktury Tile
-//NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Tile, id, x, y)
 
 // --- 2. Struktura pro vrstvu mapy (Layer) ---
 struct Layer {
