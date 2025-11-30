@@ -15,7 +15,7 @@ struct SpriteCharacter {
 	std::string name;
 	int frameRow = 0;
 	int frameCol = 0;
-	sf::IntRect textureSize;
+	sf::FloatRect textureSize;
 };
 
 enum class Direction {
@@ -26,9 +26,18 @@ enum class Direction {
 	Idle = -1
 };
 
+struct TileCollider {
+    bool active = false;
+    sf::FloatRect rect;
+    int type;            // 0 = nic, 1 = wall, 2 = trap, 3 = building...
+    // nebo tøeba enum
+};
+
+
+// Definice struktur pro mapu a jejich serializaci pomocí nlohmann::json
 
 // Užiteèný alias pro mapu atributù, kde klíè i hodnota jsou stringy
-//using Attributes = std::map<std::string, std::string>;
+using Attributes = std::map<std::string, std::string>;
 
 // --- 1. Struktura pro jednotlivou dlaždici (Tile) ---
 struct Tile {
@@ -36,12 +45,22 @@ struct Tile {
     int x;
     int y;
     // Pole 'attributes' je volitelné, pokud se v JSON nevyskytuje, bude mapa prázdná
-    //Attributes attributes;
+	std::optional<Attributes> attributes;
 };
 
+inline void from_json(const nlohmann::json& j, Tile& t)
+{
+    j.at("id").get_to(t.id);
+    j.at("x").get_to(t.x);
+    j.at("y").get_to(t.y);
 
-// Makro pro automatickou serializaci/deserializaci struktury Tile
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Tile, id, x, y)
+    if (j.contains("attributes")) {
+        t.attributes = j.at("attributes").get<Attributes>();
+    }
+    else {
+        t.attributes = std::nullopt;
+    }
+}
 
 // --- 2. Struktura pro vrstvu mapy (Layer) ---
 struct Layer {
@@ -56,8 +75,8 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Layer, name, tiles, collider)
 // --- 3. Hlavní struktura mapy (MapData) ---
 struct MapData {
     int tileSize;
-    int mapWidth;
-    int mapHeight;
+    float mapWidth;
+    float mapHeight;
     std::vector<Layer> layers; // Seznam objektù Layer
 };
 

@@ -7,6 +7,12 @@
 // */
 MapData MapJsonParse::LoadMapFromJsonFile(const std::string& filepath) {
     std::ifstream file(filepath);
+
+    if (!std::filesystem::exists(filepath)) {
+        std::cerr << "Soubor neexistuje: " << filepath << std::endl;
+        return MapData{};
+    }
+
     if (!file.is_open()) {
         std::cerr << "CHYBA: Nelze otevøít soubor: " << filepath << std::endl;
         return MapData{}; // Vrací prázdnou strukturu
@@ -14,8 +20,9 @@ MapData MapJsonParse::LoadMapFromJsonFile(const std::string& filepath) {
 
     try {
         // 1. Parsuje JSON ze souboru
-        nlohmann::json j;
-        file >> j;
+        nlohmann::json j = nlohmann::json::parse(file, nullptr, true, true);
+        //nlohmann::json j;
+        //file >> j;
 
         // 2. Deserializace JSON objektu do C++ struktury (hlavní kouzlo nlohmann/json)
         MapData map_data = j.get<MapData>();

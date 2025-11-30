@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="MapJsonParse.cpp" />
     <ClCompile Include="LekceSprite.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -142,9 +143,10 @@
     <Image Include="assets\characters2.png" />
     <Image Include="assets\garden.png" />
     <Image Include="assets\characters.png" />
+    <Image Include="assets\map-level-01.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\map.json" />
+    <None Include="assets\map-level-01.json" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="MapJsonParse.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />

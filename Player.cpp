@@ -14,8 +14,11 @@ Player::Player(sf::RenderWindow* window, sf::Texture& spritesheet, SpriteCharact
 
 void Player::update(int direction, sf::Vector2f deltaPos)
 {
-	if (direction == -1)
+	
+	if (direction == -1) {
+		m_clock.restart();
 		return;
+	}
 
 	if (direction != m_lastDirection) {
 		m_currentFrameIndex = 0;
@@ -27,16 +30,13 @@ void Player::update(int direction, sf::Vector2f deltaPos)
 	move(deltaPos);
 }
 
+// vykreslování hráèe øeší MapGenerator pøes referenci na m_currentFrame
 void Player::draw()
 {
-	// vykreslíme všechny snímky pro kontrolu naètení
-	/*for (auto& frame : m_animation)
-	{
-		m_window->draw(frame);
-	}*/
-
 	m_window->draw(m_currentFrame);
 }
+
+
 
 /// <summary>
 /// Posune hráèe o zadaný vektor s uplatnìním rychlosti, omezí pohyb na povolenou herní oblast a aktualizuje pozici grafického rámce.
@@ -50,13 +50,64 @@ void Player::move(sf::Vector2f deltaPos)
 		m_playerPos.y + m_playerSpeed * deltaPos.y 
 	};
 
-	if (GAME_AREA.contains(newPos.x, newPos.y) &&
+	if (isCollision(newPos)) {
+		m_currentFrame.setPosition(m_playerPos);
+		return;
+	}
+
+	/*if (GAME_AREA.contains(newPos.x, newPos.y) &&
 		GAME_AREA.contains(newPos.x + 100, newPos.y + 100))
 	{
 		m_playerPos = newPos;
+	}*/
+
+	m_playerPos = newPos;
+	m_currentFrame.setPosition(m_playerPos);
+}
+
+bool Player::isCollision(sf::Vector2f& playerPos)
+{
+	// Lokalní rozmìry sprite (width/height) - safe
+	sf::FloatRect local = m_currentFrame.getLocalBounds();
+	sf::Vector2f origin = m_currentFrame.getOrigin();
+
+	// Vypoèti AABB pro novou pozici (newPos je svìtová pozice, kterou chceš použít)
+	/*sf::FloatRect playerBound{
+		playerPos.x - origin.x,
+		playerPos.y - origin.y,
+		local.width,
+		local.height
+	};*/
+
+	sf::FloatRect playerBoxCollider{
+		playerPos.x - 20,
+		playerPos.y + 30,
+		50,
+		20
+	};
+
+
+	// TODO: pøidat reference na velikost dlaždice a rozmìry møížky
+	const int tileSize = 128;
+
+	int leftTile = std::max(0, (int)std::floor(playerBoxCollider.left / tileSize));
+	int rightTile = std::min(10 - 1, (int)std::floor((playerBoxCollider.left + playerBoxCollider.width) / tileSize));
+	int topTile = std::max(0, (int)std::floor(playerBoxCollider.top / tileSize));
+	int bottomTile = std::min(6 - 1, (int)std::floor((playerBoxCollider.top + playerBoxCollider.height) / tileSize));
+
+	for (int y = topTile; y <= bottomTile; ++y)
+	{
+		for (int x = leftTile; x <= rightTile; ++x)
+		{
+			if (!tileGrid[y][x].active)
+				continue;
+
+			if (playerBoxCollider.intersects(tileGrid[y][x].rect))
+				return true;
+		}
 	}
 
-	m_currentFrame.setPosition(m_playerPos);
+	return false;
 }
 
 /// <summary>
@@ -71,13 +122,13 @@ void Player::loadCharacterSprites()
 	{
 		for (int col = 0; col < m_sprt.frameCol; col++)
 		{
-			int x = col * m_sprt.textureSize.width + m_sprt.textureSize.left;
-			int y = row * m_sprt.textureSize.height + m_sprt.textureSize.top;
+			int x = col * (int)m_sprt.textureSize.width ;
+			int y = row * (int)m_sprt.textureSize.height ;
 
 			sf::Sprite spr;
 			spr.setTexture(m_spritesheet);
-			spr.setTextureRect(sf::IntRect(x, y, m_sprt.textureSize.width, m_sprt.textureSize.height));
-
+			spr.setTextureRect(sf::IntRect(x, y, (int)m_sprt.textureSize.width, (int)m_sprt.textureSize.height));
+			spr.setOrigin(m_sprt.textureSize.width / 2, m_sprt.textureSize.height / 2);
 			m_frames[row].push_back(spr);
 		}
 	}
@@ -97,4 +148,9 @@ void Player::animation(int direction)
 	}
 
 	m_currentFrame = m_frames[direction][m_currentFrameIndex];
+}
+
+sf::Sprite& Player::getCurrentFrame()
+{
+	return m_currentFrame;
 }
