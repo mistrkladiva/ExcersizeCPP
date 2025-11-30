@@ -4,17 +4,6 @@
   "mapHeight": 6,
   "layers": [
     {
-      "name": "top_layer",
-      "tiles": [
-        {
-          "id": "13",
-          "x": 4,
-          "y": 0
-        }
-      ],
-      "collider": false
-    },
-    {
       "name": "house_out",
       "tiles": [
         {
@@ -31,10 +20,7 @@
         {
           "id": "10",
           "x": 1,
-          "y": 2,
-          "attributes": {
-            "custom_collider": "49,115,30,5"
-          }
+          "y": 2
         },
         {
           "id": "11",
@@ -64,28 +50,30 @@
       "name": "tree",
       "tiles": [
         {
+          "id": "13",
+          "x": 4,
+          "y": 0,
+          "attributes": {
+            "top-layer": "true"
+          }
+        },
+        {
           "id": "14",
           "x": 4,
           "y": 1,
           "attributes": {
-            "custom_collider": "49,100,30,28"
+            "top-layer": "true"
           }
         },
         {
           "id": "15",
           "x": 7,
-          "y": 4,
-          "attributes": {
-            "custom_collider": "49,110,30,5"
-          }
+          "y": 4
         },
         {
           "id": "16",
           "x": 8,
-          "y": 4,
-          "attributes": {
-            "custom_collider": "59,110,20,5"
-          }
+          "y": 4
         }
       ],
       "collider": true
@@ -144,6 +132,14 @@
     {
       "name": "bacground",
       "tiles": [
+        {
+          "id": "7",
+          "x": 0,
+          "y": 0,
+          "attributes": {
+            "grass": "0-0"
+          }
+        },
         {
           "id": "3",
           "x": 0,
@@ -281,6 +277,11 @@
         },
         {
           "id": "8",
+          "x": 1,
+          "y": 1
+        },
+        {
+          "id": "8",
           "x": 2,
           "y": 1
         },
@@ -433,16 +434,6 @@
           "id": "8",
           "x": 2,
           "y": 3
-        },
-        {
-          "id": "7",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "id": "26",
-          "x": 1,
-          "y": 1
         }
       ],
       "collider": false
