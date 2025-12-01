@@ -1,14 +1,14 @@
 ﻿
 #include <iostream>
 #include "Player.h"
-#include "MapJsonParse.h"
 #include "MapGenerator.h"
 
 int main()
 {
-    MapData loaded_map = MapJsonParse::LoadMapFromJsonFile("assets/map-level-01.json");
+    //MapData loaded_map = MapJsonParse::LoadMapFromJsonFile("assets/map-level-01.json");
+    //MAP_DATA = MapJsonParse::LoadMapFromJsonFile("assets/map-level-01.json");
 
-    if (loaded_map.layers.empty()) {
+    if (MAP_DATA.layers.empty()) {
         std::cout << "Načítání mapy selhalo nebo mapa je prázdná." << std::endl;
         return 0;
     }
@@ -40,7 +40,7 @@ int main()
 
 	Player player(&window, charactersSpritesheet, playerSprt);
 
-    MapGenerator map01(&window, mapLevel01Spritesheet, loaded_map, player.getCurrentFrame());
+    MapGenerator map01(&window, mapLevel01Spritesheet, MAP_DATA, player.getCurrentFrame());
 
     player.update((int)playerSpriteDirection, playerDirection);
 

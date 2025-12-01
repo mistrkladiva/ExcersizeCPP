@@ -88,12 +88,12 @@ bool Player::isCollision(sf::Vector2f& playerPos)
 
 
 	// TODO: pøidat reference na velikost dlaždice a rozmìry møížky
-	const int tileSize = 128;
+	const int tileSize = MAP_DATA.tileSize;
 
 	int leftTile = std::max(0, (int)std::floor(playerBoxCollider.left / tileSize));
-	int rightTile = std::min(10 - 1, (int)std::floor((playerBoxCollider.left + playerBoxCollider.width) / tileSize));
+	int rightTile = std::min((int)MAP_DATA.mapWidth - 1, (int)std::floor((playerBoxCollider.left + playerBoxCollider.width) / tileSize));
 	int topTile = std::max(0, (int)std::floor(playerBoxCollider.top / tileSize));
-	int bottomTile = std::min(6 - 1, (int)std::floor((playerBoxCollider.top + playerBoxCollider.height) / tileSize));
+	int bottomTile = std::min((int)MAP_DATA.mapHeight - 1, (int)std::floor((playerBoxCollider.top + playerBoxCollider.height) / tileSize));
 
 	for (int y = topTile; y <= bottomTile; ++y)
 	{

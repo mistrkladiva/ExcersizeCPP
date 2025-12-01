@@ -21,10 +21,8 @@ MapData MapJsonParse::LoadMapFromJsonFile(const std::string& filepath) {
     try {
         // 1. Parsuje JSON ze souboru
         nlohmann::json j = nlohmann::json::parse(file, nullptr, true, true);
-        //nlohmann::json j;
-        //file >> j;
 
-        // 2. Deserializace JSON objektu do C++ struktury (hlavní kouzlo nlohmann/json)
+        // 2. Deserializace JSON objektu do C++ struktury
         MapData map_data = j.get<MapData>();
 
         std::cout << "JSON naèten a úspìšnì deserializován do MapData." << std::endl;
