@@ -31,7 +31,7 @@ void MapGenerator::loadTiles()
         }
     }
 
-    tileGrid.resize((int)m_mapData.mapHeight, std::vector<TileCollider>((int)m_mapData.mapWidth));
+   tileGrid.resize((int)m_mapData.mapHeight, std::vector<TileCollider>((int)m_mapData.mapWidth));
     m_overlappingLayer.clear();
 
     // projdi vrstvy
@@ -55,6 +55,7 @@ void MapGenerator::loadTiles()
             }
 
 			// dlaždice s vlastním colliderem se řídí z-indexem podle Y pozice hráče
+			// dlaždice s vlastním colliderem mohou být i interaktivní (atribut "interactive" v JSONu)
             if (tile.attributes.has_value()) {
                 auto& attrs = tile.attributes.value();
 
@@ -63,6 +64,11 @@ void MapGenerator::loadTiles()
                     sf::FloatRect customColliderRect = parseColliderString(attrs["custom_collider"]);
 
                     tileGrid[tile.y][tile.x].active = true;
+                    if (attrs.contains("interactive"))
+                    {
+                        tileGrid[tile.y][tile.x].name = attrs["interactive"];
+                    }
+                    
                     tileGrid[tile.y][tile.x].rect = sf::FloatRect(
                         tileSprite.getPosition().x + customColliderRect.left,
                         tileSprite.getPosition().y + customColliderRect.top,
@@ -73,6 +79,7 @@ void MapGenerator::loadTiles()
                     // tento tile patří do overlapping vrstvy
                     m_mapSprites.push_back(tileSprite);
                     m_overlappingLayer.push_back(&m_mapSprites.back());
+
 
                     continue;
                 }

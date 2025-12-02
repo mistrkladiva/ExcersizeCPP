@@ -11,4 +11,5 @@ const sf::FloatRect GAME_AREA{
 };
 
 extern std::vector<std::vector<TileCollider>> tileGrid = {};
+//extern std::vector<std::vector<TileCollider>> tileGrid;
 extern MapData MAP_DATA = MapJsonParse::LoadMapFromJsonFile("assets/map-level-01.json");

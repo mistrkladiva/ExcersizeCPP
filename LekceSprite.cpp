@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Player.h"
 #include "MapGenerator.h"
+#include "DialogueManager.h"
 
 int main()
 {
@@ -16,6 +17,34 @@ int main()
     sf::RenderWindow window(sf::VideoMode((int)WINDOW_WIDTH, (int)WINDOW_HEIGHT), "Simple c++ dop-down game");
     window.clear(sf::Color::Black);
     window.setVerticalSyncEnabled(true);
+
+
+    sf::Text text;
+    sf::Font font;
+    if (!font.loadFromFile("assets/fonts/arial.ttf"))
+    {
+        std::cerr << "Error loading font!" << std::endl;
+    }
+
+    text.setFont(font);
+
+    // set the string to display
+    text.setString("message");
+
+    // set the character size
+    text.setCharacterSize(24); // in pixels, not points!
+
+    // set the color
+    text.setFillColor(sf::Color::Red);
+
+    // set the text style
+    text.setStyle(sf::Text::Bold);
+    text.setPosition(100.f, 100.f);
+
+    
+
+
+
 
 
     sf::View defaultView;
@@ -38,11 +67,15 @@ int main()
     SpriteCharacter playerSprt;
 	playerSprt = { "Hero", 4, 4, sf::FloatRect(0, 0, 100,100) };
 
+   
+    //DialogueManager dialogue(&window);
+
 	Player player(&window, charactersSpritesheet, playerSprt);
 
     MapGenerator map01(&window, mapLevel01Spritesheet, MAP_DATA, player.getCurrentFrame());
 
     player.update((int)playerSpriteDirection, playerDirection);
+
 
     while (window.isOpen())
     {
@@ -80,7 +113,8 @@ int main()
         
 		player.update((int)playerSpriteDirection, playerDirection);
         map01.drawMap();
-		
+        player.draw();
+
         window.display();
     }
 }

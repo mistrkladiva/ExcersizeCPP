@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Structs.h"
 #include "Globals.h"
+#include "DialogueManager.h"
 
 class Player
 {
@@ -15,7 +16,6 @@ public:
 	void draw();
 	
 	sf::Sprite& getCurrentFrame();
-	
 
 private:
     sf::RenderWindow* m_window;
@@ -34,6 +34,12 @@ private:
 	int m_lastDirection = -2; // pomocné pro zjištìní zmìny smìru
 
 	float m_playerSpeed = 3;
+
+	sf::Vector2i m_collidedTilePos;
+
+	DialogueManager m_dialogue;
+	
+	bool m_isDialogueActive = false;
 
     void loadCharacterSprites();
 	void animation(int direction);

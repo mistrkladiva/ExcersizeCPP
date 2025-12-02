@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DialogueManager.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="MapJsonParse.cpp" />
@@ -153,6 +154,7 @@
     <Text Include="assets\info.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DialogueManager.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="MapJsonParse.h" />
