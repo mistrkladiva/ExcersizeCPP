@@ -1,53 +1,42 @@
-﻿
+﻿#include "Structs.h" // Ujistit se, že je zahrnutá definice Layer
 #include <iostream>
 #include "Player.h"
 #include "MapGenerator.h"
-#include "DialogueManager.h"
 
 int main()
 {
-    //MapData loaded_map = MapJsonParse::LoadMapFromJsonFile("assets/map-level-01.json");
-    //MAP_DATA = MapJsonParse::LoadMapFromJsonFile("assets/map-level-01.json");
-
     if (MAP_DATA.layers.empty()) {
         std::cout << "Načítání mapy selhalo nebo mapa je prázdná." << std::endl;
         return 0;
     }
 
+#pragma region Testování získání interaktivní item dlaždice a vložení dlaždice
+    Tile& interactiveTile = get_interactive_item_tile("neco");
+    if (interactiveTile.id != "-1") {
+        interactiveTile.x = 5;
+    }
+
+    Tile newTile;
+    newTile = {
+        "33",
+        2,
+        7,
+        Attributes{
+            {"custom_collider", "59,110,20,5"},
+            {"interactive", "barrel"}
+        }
+    };
+
+    if (!insert_new_item_tile(newTile)) {
+        std::cout << "Vkládání nové dlaždice selhalo." << std::endl;
+    }
+#pragma endregion
+
     sf::RenderWindow window(sf::VideoMode((int)WINDOW_WIDTH, (int)WINDOW_HEIGHT), "Simple c++ dop-down game");
     window.clear(sf::Color::Black);
     window.setVerticalSyncEnabled(true);
 
-
-    sf::Text text;
-    sf::Font font;
-    if (!font.loadFromFile("assets/fonts/arial.ttf"))
-    {
-        std::cerr << "Error loading font!" << std::endl;
-    }
-
-    text.setFont(font);
-
-    // set the string to display
-    text.setString("message");
-
-    // set the character size
-    text.setCharacterSize(24); // in pixels, not points!
-
-    // set the color
-    text.setFillColor(sf::Color::Red);
-
-    // set the text style
-    text.setStyle(sf::Text::Bold);
-    text.setPosition(100.f, 100.f);
-
-    
-
-
-
-
-
-    sf::View defaultView;
+     sf::View defaultView;
     defaultView.reset(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
 
     sf::Texture mapLevel01Spritesheet;
@@ -66,9 +55,6 @@ int main()
     sf::Vector2f playerDirection = { 0,0 };
     SpriteCharacter playerSprt;
 	playerSprt = { "Hero", 4, 4, sf::FloatRect(0, 0, 100,100) };
-
-   
-    //DialogueManager dialogue(&window);
 
 	Player player(&window, charactersSpritesheet, playerSprt);
 

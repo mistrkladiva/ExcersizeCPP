@@ -30,7 +30,6 @@ void Player::update(int direction, sf::Vector2f deltaPos)
 	animation(direction);
 	move(deltaPos);
 	m_dialogue.setDialoguePosition({ m_playerPos.x, m_playerPos.y - 100.f });
-
 }
 
 // vykreslování hráèe øeší MapGenerator pøes referenci na m_currentFrame
@@ -39,7 +38,6 @@ void Player::draw()
 	if (m_isDialogueActive)
 		m_dialogue.draw();
 }
-
 
 
 /// <summary>
