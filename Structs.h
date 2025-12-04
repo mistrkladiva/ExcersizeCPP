@@ -28,6 +28,7 @@ enum class Direction {
 
 struct TileCollider {
     bool active = false;
+	std::string name = "";
     sf::FloatRect rect;
     int type;            // 0 = nic, 1 = wall, 2 = trap, 3 = building...
     // nebo tøeba enum

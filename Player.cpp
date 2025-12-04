@@ -4,6 +4,7 @@ Player::Player(sf::RenderWindow* window, sf::Texture& spritesheet, SpriteCharact
 	: m_window(window)
 	, m_spritesheet(spritesheet)
 	, m_sprt(sprt)
+	, m_dialogue(window)
 {
 	loadCharacterSprites();
 	// clock už je implicitnì spuštìný pøi vytvoøení
@@ -14,7 +15,7 @@ Player::Player(sf::RenderWindow* window, sf::Texture& spritesheet, SpriteCharact
 
 void Player::update(int direction, sf::Vector2f deltaPos)
 {
-	
+
 	if (direction == -1) {
 		m_clock.restart();
 		return;
@@ -28,14 +29,15 @@ void Player::update(int direction, sf::Vector2f deltaPos)
 
 	animation(direction);
 	move(deltaPos);
+	m_dialogue.setDialoguePosition({ m_playerPos.x, m_playerPos.y - 100.f });
 }
 
 // vykreslování hráèe øeší MapGenerator pøes referenci na m_currentFrame
 void Player::draw()
 {
-	m_window->draw(m_currentFrame);
+	if (m_isDialogueActive)
+		m_dialogue.draw();
 }
-
 
 
 /// <summary>
@@ -45,13 +47,22 @@ void Player::draw()
 /// pøesun se provede pouze pokud výsledná pozice a oblast 100×100 od ní jsou uvnitø GAME_AREA.</param>
 void Player::move(sf::Vector2f deltaPos)
 {
-	sf::Vector2f newPos = { 
+	sf::Vector2f newPos = {
 		m_playerPos.x + m_playerSpeed * deltaPos.x,
-		m_playerPos.y + m_playerSpeed * deltaPos.y 
+		m_playerPos.y + m_playerSpeed * deltaPos.y
 	};
 
 	if (isCollision(newPos)) {
 		m_currentFrame.setPosition(m_playerPos);
+		int row = m_collidedTilePos.y;
+		int col = m_collidedTilePos.x;
+
+		if (tileGrid[row][col].name != "") {
+			if (tileGrid[row][col].name == "barrel") {
+				m_dialogue.setDialogueMessage("It's a barrel. It looks empty.");
+				m_isDialogueActive = true;
+			}
+		}
 		return;
 	}
 
@@ -61,6 +72,7 @@ void Player::move(sf::Vector2f deltaPos)
 		m_playerPos = newPos;
 	}*/
 
+	m_isDialogueActive = false;
 	m_playerPos = newPos;
 	m_currentFrame.setPosition(m_playerPos);
 }
@@ -102,13 +114,16 @@ bool Player::isCollision(sf::Vector2f& playerPos)
 			if (!tileGrid[y][x].active)
 				continue;
 
-			if (playerBoxCollider.intersects(tileGrid[y][x].rect))
+			if (playerBoxCollider.intersects(tileGrid[y][x].rect)) {
+				m_collidedTilePos = sf::Vector2i(x, y);
 				return true;
+			}
 		}
 	}
 
 	return false;
 }
+
 
 /// <summary>
 /// Naète jednotlivé snímky (sf::Sprite) postavy ze spritesheetu a uloží je do èlenské promìnné m_frames.
@@ -122,8 +137,8 @@ void Player::loadCharacterSprites()
 	{
 		for (int col = 0; col < m_sprt.frameCol; col++)
 		{
-			int x = col * (int)m_sprt.textureSize.width ;
-			int y = row * (int)m_sprt.textureSize.height ;
+			int x = col * (int)m_sprt.textureSize.width;
+			int y = row * (int)m_sprt.textureSize.height;
 
 			sf::Sprite spr;
 			spr.setTexture(m_spritesheet);

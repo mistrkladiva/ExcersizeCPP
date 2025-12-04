@@ -1,24 +1,42 @@
-﻿
+﻿#include "Structs.h" // Ujistit se, že je zahrnutá definice Layer
 #include <iostream>
 #include "Player.h"
 #include "MapGenerator.h"
 
 int main()
 {
-    //MapData loaded_map = MapJsonParse::LoadMapFromJsonFile("assets/map-level-01.json");
-    //MAP_DATA = MapJsonParse::LoadMapFromJsonFile("assets/map-level-01.json");
-
     if (MAP_DATA.layers.empty()) {
         std::cout << "Načítání mapy selhalo nebo mapa je prázdná." << std::endl;
         return 0;
     }
 
+#pragma region Testování získání interaktivní item dlaždice a vložení dlaždice
+    Tile& interactiveTile = get_interactive_item_tile("neco");
+    if (interactiveTile.id != "-1") {
+        interactiveTile.x = 5;
+    }
+
+    Tile newTile;
+    newTile = {
+        "33",
+        2,
+        7,
+        Attributes{
+            {"custom_collider", "59,110,20,5"},
+            {"interactive", "barrel"}
+        }
+    };
+
+    if (!insert_new_item_tile(newTile)) {
+        std::cout << "Vkládání nové dlaždice selhalo." << std::endl;
+    }
+#pragma endregion
+
     sf::RenderWindow window(sf::VideoMode((int)WINDOW_WIDTH, (int)WINDOW_HEIGHT), "Simple c++ dop-down game");
     window.clear(sf::Color::Black);
     window.setVerticalSyncEnabled(true);
 
-
-    sf::View defaultView;
+     sf::View defaultView;
     defaultView.reset(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
 
     sf::Texture mapLevel01Spritesheet;
@@ -43,6 +61,7 @@ int main()
     MapGenerator map01(&window, mapLevel01Spritesheet, MAP_DATA, player.getCurrentFrame());
 
     player.update((int)playerSpriteDirection, playerDirection);
+
 
     while (window.isOpen())
     {
@@ -80,7 +99,8 @@ int main()
         
 		player.update((int)playerSpriteDirection, playerDirection);
         map01.drawMap();
-		
+        player.draw();
+
         window.display();
     }
 }

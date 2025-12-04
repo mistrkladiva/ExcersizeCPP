@@ -233,7 +233,8 @@
           "x": 1,
           "y": 7,
           "attributes": {
-            "custom_collider": "59,110,20,5"
+            "custom_collider": "59,110,20,5",
+            "interactive": "barrel"
           }
         }
       ],
