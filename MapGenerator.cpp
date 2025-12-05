@@ -1,11 +1,11 @@
 ﻿#include "MapGenerator.h"
 #include <sstream>
 
-MapGenerator::MapGenerator(sf::RenderWindow* window, sf::Texture& mapSpritesheet, MapData& mapData, sf::Sprite& playerSprite)
+MapGenerator::MapGenerator(sf::RenderWindow* window, sf::Texture& mapSpritesheet, MapData& mapData, std::vector<sf::Sprite*>& charactersSprite)
     : m_window(window),
     m_mapSpritesheet(mapSpritesheet),
     m_mapData(mapData),
-    m_playerSprite(playerSprite)
+	m_charactersSprite(charactersSprite)
 {
     loadTiles();
 }
@@ -31,7 +31,6 @@ void MapGenerator::loadTiles()
         }
     }
 
-   tileGrid.resize((int)m_mapData.mapHeight, std::vector<TileCollider>((int)m_mapData.mapWidth));
     m_overlappingLayer.clear();
 
     // projdi vrstvy
@@ -80,7 +79,6 @@ void MapGenerator::loadTiles()
                     m_mapSprites.push_back(tileSprite);
                     m_overlappingLayer.push_back(&m_mapSprites.back());
 
-
                     continue;
                 }
             }
@@ -100,8 +98,11 @@ void MapGenerator::loadTiles()
             m_mapSprites.push_back(tileSprite);
         }
     }
-	// přidej hráče do overlapping vrstvy jako POINTER pro výpočet z-indexu
-    m_overlappingLayer.push_back(&m_playerSprite);
+
+	// přidej hráče a NPC postavy do overlapping vrstvy jako POINTERY pro výpočet z-indexu
+    for (auto& chrSpr : m_charactersSprite) {
+        m_overlappingLayer.push_back(chrSpr);
+	}
 }
 
 /// <summary>

@@ -16,6 +16,7 @@ struct SpriteCharacter {
 	int frameRow = 0;
 	int frameCol = 0;
 	sf::FloatRect textureSize;
+    sf::FloatRect spriteCollider;
 };
 
 enum class Direction {

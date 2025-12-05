@@ -138,6 +138,7 @@
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="MapJsonParse.cpp" />
     <ClCompile Include="LekceSprite.cpp" />
+    <ClCompile Include="Npc.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +159,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="MapJsonParse.h" />
+    <ClInclude Include="Npc.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Structs.h" />
