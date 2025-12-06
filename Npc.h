@@ -29,7 +29,7 @@ private:
 	// timing for animation
 	sf::Clock m_clock;
 	sf::Time m_timeAccumulator = sf::Time::Zero;
-	float m_frameDuration = 0.10f; // seconds per frame, nastavte podle potøeby
+	float m_frameDuration = 0.3f; // seconds per frame, nastavte podle potøeby
 	int m_lastDirection = -2; // pomocné pro zjištìní zmìny smìru
 
 	float m_playerSpeed = 3;

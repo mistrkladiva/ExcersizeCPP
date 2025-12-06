@@ -16,6 +16,7 @@ Player::Player(sf::RenderWindow* window, sf::Texture& spritesheet, SpriteCharact
 void Player::update(int direction, sf::Vector2f deltaPos)
 {
 
+	// mùže se použít k nìjakému stavu, napø. pauza nebo dialog
 	if (direction == -1) {
 		m_clock.restart();
 		return;

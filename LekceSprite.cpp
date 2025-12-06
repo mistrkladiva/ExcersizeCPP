@@ -47,7 +47,7 @@ int main()
     }
 
     sf::Texture charactersSpritesheet;
-	if (!charactersSpritesheet.loadFromFile("assets/characters2.png")) {
+	if (!charactersSpritesheet.loadFromFile("assets/characters.png")) {
 		std::cerr << "Error loading character spritesheet!" << std::endl;
         return 0;
     }
@@ -56,16 +56,21 @@ int main()
     sf::Vector2f playerDirection = { 0,0 };
 
     SpriteCharacter playerSprt;
-	playerSprt = { "Hero", 4, 4, sf::FloatRect(0, 0, 100,100), sf::FloatRect(0, 0, 50,20) };
+	playerSprt = { "Hero", 6, 4, sf::FloatRect(0, 0, 100,100), sf::FloatRect(0.f, 0.f, 50.f, 20.f) };
     Player player(&window, charactersSpritesheet, playerSprt);
 
     SpriteCharacter npc1Sprt;
-    npc1Sprt = { "Npc1", 4, 4, sf::FloatRect(400.f, 0.f, 100.f,100.f), sf::FloatRect(0, 0, 50,20) };
+    npc1Sprt = { "Npc1", 6, 4, sf::FloatRect(400.f, 0.f, 100.f,100.f), sf::FloatRect(-25.f, 30.f, 50.f, 20.f) };
     Npc npc1(&window, charactersSpritesheet, npc1Sprt, sf::Vector2i(4,3));
+
+    SpriteCharacter npc2Sprt;
+    npc2Sprt = { "Npc2", 6, 4, sf::FloatRect(0.f, 600.f, 100.f,100.f), sf::FloatRect(-40.f, 30.f, 80.f, 20.f) };
+    Npc npc2(&window, charactersSpritesheet, npc2Sprt, sf::Vector2i(11, 9));
 
     std::vector<sf::Sprite*> charactersSprite;
     charactersSprite.push_back(&player.getCurrentFrame());
 	charactersSprite.push_back(&npc1.getCurrentFrame());
+    charactersSprite.push_back(&npc2.getCurrentFrame());
 
     MapGenerator map01(&window, mapLevel01Spritesheet, MAP_DATA, charactersSprite);
 
@@ -108,11 +113,12 @@ int main()
         
 		player.update((int)playerSpriteDirection, playerDirection);
         npc1.update();
+		npc2.update();
         map01.drawMap();
         player.draw();
-		//npc1.update();
+		// vykresluje jen kolizní obdélník
 		npc1.draw();
-
+		npc2.draw();
         window.display();
     }
 }

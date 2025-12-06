@@ -20,11 +20,12 @@ struct SpriteCharacter {
 };
 
 enum class Direction {
-	Down = 0,
-	Right = 1,
-	Up = 2,
-	Left = 3,
-	Idle = -1
+    Idle = 0,
+	Down = 1,
+	Right = 2,
+	Up = 3,
+	Left = 4,
+	dialogue = 5
 };
 
 struct TileCollider {

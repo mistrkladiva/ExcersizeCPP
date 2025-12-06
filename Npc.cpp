@@ -17,7 +17,7 @@ Npc::Npc(sf::RenderWindow* window, sf::Texture& spritesheet, SpriteCharacter& sp
 
 void Npc::update()
 {
-	animation(1);
+	animation(0);
 }
 
 // vykreslování hráèe øeší MapGenerator pøes referenci na m_currentFrame
@@ -121,8 +121,8 @@ void Npc::loadCharacterSprites()
 	// nastavení kolizního obdélníku je od 0,0 zde ještì není nastaven origin
 	// v pøipadì pohybu npc bude tøeba aktualizovat pozici kolizního boxu a ukládání do tileGrid
 	sf::FloatRect playerBoxCollider{
-		m_npcPos.x - 25,
-		m_npcPos.y + 30,
+		m_npcPos.x + m_sprt.spriteCollider.left,
+		m_npcPos.y + m_sprt.spriteCollider.top,
 		m_sprt.spriteCollider.width,
 		m_sprt.spriteCollider.height
 	};
