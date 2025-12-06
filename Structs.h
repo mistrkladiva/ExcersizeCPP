@@ -16,14 +16,16 @@ struct SpriteCharacter {
 	int frameRow = 0;
 	int frameCol = 0;
 	sf::FloatRect textureSize;
+    sf::FloatRect spriteCollider;
 };
 
 enum class Direction {
-	Down = 0,
-	Right = 1,
-	Up = 2,
-	Left = 3,
-	Idle = -1
+    Idle = 0,
+	Down = 1,
+	Right = 2,
+	Up = 3,
+	Left = 4,
+	dialogue = 5
 };
 
 struct TileCollider {

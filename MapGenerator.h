@@ -6,7 +6,7 @@
 class MapGenerator
 {
 public:
-    MapGenerator(sf::RenderWindow* window, sf::Texture& mapSpritesheet, MapData& mapData, sf::Sprite& playerSprite);
+    MapGenerator(sf::RenderWindow* window, sf::Texture& mapSpritesheet, MapData& mapData, std::vector<sf::Sprite*>& charactersSprite);
     void drawMap();
 
 private:
@@ -21,7 +21,8 @@ private:
     // HLAVNÍ ZMÌNA: ukazatele, ne kopie
     std::vector<sf::Sprite*> m_overlappingLayer;
 
-    sf::Sprite& m_playerSprite;
+    std::vector<sf::Sprite*> m_charactersSprite;
+
 
     void loadTiles();
     sf::FloatRect parseColliderString(const std::string& colliderStr);
