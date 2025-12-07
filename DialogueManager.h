@@ -8,7 +8,9 @@ class DialogueManager
 		DialogueManager(sf::RenderWindow* window);
 		void draw();
 		void setDialogueMessage(const std::string& message);
+		void setDialogueMessage(const std::string& message, float seconds);
 		void setDialoguePosition(sf::Vector2f position);
+		bool isDialogueActive() const { return m_isActive; }
 
 private:
 	sf::RenderWindow* m_window;
@@ -18,6 +20,9 @@ private:
 	sf::RectangleShape m_background;
 
 	void setTextObject();
-	
-};
 
+	// nové èleny pro øízení zobrazení dialogu
+	bool m_isActive = false;
+	sf::Clock m_dialogueClock;
+	float m_durationSeconds = 3.f; // výchozí doba zobrazení v sekundách
+};

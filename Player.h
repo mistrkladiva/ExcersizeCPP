@@ -3,6 +3,7 @@
 #include "Structs.h"
 #include "Globals.h"
 #include "DialogueManager.h"
+#include "GameEventsManager.h"
 
 class Player
 {
@@ -10,7 +11,7 @@ public:
 
 	int direction; // idle=0, left=1, right=2, up=3, down=4
 	sf::Vector2f m_playerPos = { WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 };
-	Player(sf::RenderWindow* window, sf::Texture& spritesheet, SpriteCharacter sprt);
+	Player(sf::RenderWindow* window, GameEventsManager& gameEventsManager, sf::Texture& spritesheet, SpriteCharacter sprt);
 
 	void update(int direction, sf::Vector2f deltaPos);
 	void draw();
@@ -37,7 +38,9 @@ private:
 
 	sf::Vector2i m_collidedTilePos;
 
-	DialogueManager m_dialogue;
+	GameEventsManager m_gameEventsManager;
+
+	sf::Vector2i m_lastColliderTile = sf::Vector2i(-1, -1);
 	
 	bool m_isDialogueActive = false;
 

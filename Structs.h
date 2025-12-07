@@ -37,6 +37,39 @@ struct TileCollider {
 };
 
 
+
+enum class eventConditions {
+	isCollideWithNpc = 0,
+	isEventComplete = 1
+};
+
+enum class eventActions {
+	startDialogue = 0,
+	eventComplete = 1
+};
+
+struct conditionData
+{
+	eventConditions conditionType;
+	std::string conditionValue;
+};
+
+struct actionData
+{
+	eventActions actionType;
+	std::string actionValue;
+};
+
+struct eventData
+{
+	std::string eventName;
+	std::vector<conditionData> eventConditions;
+	std::vector<actionData> eventActions;
+	bool eventCompleted = false;
+};
+
+
+
 // Definice struktur pro mapu a jejich serializaci pomocí nlohmann::json
 
 // Užiteèný alias pro mapu atributù, kde klíè i hodnota jsou stringy

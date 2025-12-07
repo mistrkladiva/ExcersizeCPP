@@ -1,10 +1,10 @@
 #include "Player.h"
 
-Player::Player(sf::RenderWindow* window, sf::Texture& spritesheet, SpriteCharacter sprt)
+Player::Player(sf::RenderWindow* window, GameEventsManager& gameEventsManager, sf::Texture& spritesheet, SpriteCharacter sprt)
 	: m_window(window)
 	, m_spritesheet(spritesheet)
 	, m_sprt(sprt)
-	, m_dialogue(window)
+	, m_gameEventsManager(gameEventsManager)
 {
 	loadCharacterSprites();
 	// clock už je implicitnì spuštìný pøi vytvoøení
@@ -30,14 +30,14 @@ void Player::update(int direction, sf::Vector2f deltaPos)
 
 	animation(direction);
 	move(deltaPos);
-	m_dialogue.setDialoguePosition({ m_playerPos.x, m_playerPos.y - 100.f });
+	//m_gameEventsManager.setDialoguePosition({ m_playerPos.x, m_playerPos.y - 100.f });
 }
 
 // vykreslování hráèe øeší MapGenerator pøes referenci na m_currentFrame
 void Player::draw()
 {
-	if (m_isDialogueActive)
-		m_dialogue.draw();
+	/*if (m_isDialogueActive)
+		m_gameEventsManager.draw();*/
 }
 
 
@@ -58,13 +58,28 @@ void Player::move(sf::Vector2f deltaPos)
 		int row = m_collidedTilePos.y;
 		int col = m_collidedTilePos.x;
 
+		// souèasná kolizní dlaždice (x,y)
+		sf::Vector2i currentTile(col, row);
+
 		if (tileGrid[row][col].name != "") {
-			if (tileGrid[row][col].name == "barrel") {
-				m_dialogue.setDialogueMessage("It's a barrel. It looks empty.");
-				m_isDialogueActive = true;
+			if (m_lastColliderTile != currentTile) {
+				// nový vstup do kolizního boxu této dlaždice
+				m_lastColliderTile = currentTile;
+				m_gameEventsManager.checkEvent(tileGrid[row][col].name);
 			}
+			/*if (tileGrid[row][col].name == "Starosta") {
+				m_dialogue.setDialogueMessage("It's a barrel. It looks empty.");
+				checkEvent("Starosta");
+				m_isDialogueActive = true;
+			}*/
 		}
 		return;
+	} else
+	{
+		// žádná kolize -> umožnit znovuvstup pozdìji
+		if (m_lastColliderTile.x != -1 || m_lastColliderTile.y != -1) {
+			m_lastColliderTile = sf::Vector2i(-1, -1);
+		}
 	}
 
 	/*if (GAME_AREA.contains(newPos.x, newPos.y) &&
