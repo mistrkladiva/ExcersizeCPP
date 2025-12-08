@@ -33,7 +33,7 @@ struct TileCollider {
 	std::string name = "";
     sf::FloatRect rect;
     int type;            // 0 = nic, 1 = wall, 2 = trap, 3 = building...
-    // nebo tøeba enum
+    // nebo tÅ™eba enum
 };
 
 
@@ -70,17 +70,17 @@ struct eventData
 
 
 
-// Definice struktur pro mapu a jejich serializaci pomocí nlohmann::json
+// Definice struktur pro mapu a jejich serializaci pomocÃ­ nlohmann::json
 
-// Uiteènı alias pro mapu atributù, kde klíè i hodnota jsou stringy
+// UÅ¾iteÄnÃ½ alias pro mapu atributÅ¯, kde klÃ­Ä i hodnota jsou stringy
 using Attributes = std::map<std::string, std::string>;
 
-// --- 1. Struktura pro jednotlivou dladici (Tile) ---
+// --- 1. Struktura pro jednotlivou dlaÅ¾dici (Tile) ---
 struct Tile {
     std::string id;
     int x;
     int y;
-    // Pole 'attributes' je volitelné, pokud se v JSON nevyskytuje, bude mapa prázdná
+    // Pole 'attributes' je volitelnÃ©, pokud se v JSON nevyskytuje, bude mapa prÃ¡zdnÃ¡
 	std::optional<Attributes> attributes;
 };
 
@@ -101,19 +101,19 @@ inline void from_json(const nlohmann::json& j, Tile& t)
 // --- 2. Struktura pro vrstvu mapy (Layer) ---
 struct Layer {
     std::string name;
-    std::vector<Tile> tiles; // Seznam objektù Tile
+    std::vector<Tile> tiles; // Seznam objektÅ¯ Tile
     bool collider;
 };
 
 // Makro pro automatickou serializaci/deserializaci struktury Layer
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Layer, name, tiles, collider)
 
-// --- 3. Hlavní struktura mapy (MapData) ---
+// --- 3. HlavnÃ­ struktura mapy (MapData) ---
 struct MapData {
     int tileSize;
     float mapWidth;
     float mapHeight;
-    std::vector<Layer> layers; // Seznam objektù Layer
+    std::vector<Layer> layers; // Seznam objektÅ¯ Layer
 };
 
 // Makro pro automatickou serializaci/deserializaci struktury MapData

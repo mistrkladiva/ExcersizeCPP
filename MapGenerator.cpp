@@ -1,4 +1,4 @@
-﻿#include "MapGenerator.h"
+#include "MapGenerator.h"
 #include <sstream>
 
 MapGenerator::MapGenerator(sf::RenderWindow* window, sf::Texture& mapSpritesheet, MapData& mapData, std::vector<sf::Sprite*>& charactersSprite)

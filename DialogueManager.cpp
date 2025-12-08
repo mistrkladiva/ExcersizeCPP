@@ -28,10 +28,7 @@ void DialogueManager::setDialogueMessage(const std::string& message)
 
 void DialogueManager::setDialogueMessage(const std::string& message, float seconds)
 {
-	std::wstring neco(L"Anna øíká: Mùj bratr je stateèný bojovník.");
-	m_textObject.setString(message);
 	m_textObject.setString(sf::String::fromUtf8(message.begin(), message.end()));
-	//m_textObject.setString(sf::String::fromUtf8(message.begin(), message.end()));
 	m_durationSeconds = seconds;
 	m_dialogueClock.restart();
 	m_isActive = true;
@@ -48,7 +45,7 @@ void DialogueManager::draw()
 	if (!m_isActive)
 		return;
 
-	// pokud èas vypršel, deaktivuj dialog
+	// pokud Äas vyprÅ¡el, deaktivuj dialog
 	if (m_dialogueClock.getElapsedTime().asSeconds() >= m_durationSeconds)
 	{
 		m_isActive = false;

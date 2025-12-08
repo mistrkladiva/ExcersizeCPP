@@ -1,4 +1,4 @@
-﻿#include "Structs.h" // Ujistit se, že je zahrnutá definice Layer
+#include "Structs.h" // Ujistit se, že je zahrnutá definice Layer
 #include <iostream>
 #include "Player.h"
 #include "MapGenerator.h"

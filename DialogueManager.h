@@ -21,8 +21,8 @@ private:
 
 	void setTextObject();
 
-	// nové èleny pro øízení zobrazení dialogu
+	// novÃ© Äleny pro Å™Ã­zenÃ­ zobrazenÃ­ dialogu
 	bool m_isActive = false;
 	sf::Clock m_dialogueClock;
-	float m_durationSeconds = 3.f; // vıchozí doba zobrazení v sekundách
+	float m_durationSeconds = 3.f; // vÃ½chozÃ­ doba zobrazenÃ­ v sekundÃ¡ch
 };

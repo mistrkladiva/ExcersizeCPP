@@ -18,7 +18,7 @@ public:
 private:
 	sf::RenderWindow* m_window;
 	sf::Texture& m_spritesheet;
-	SpriteCharacter m_sprt; // definice výøezu ve spritesheetu
+	SpriteCharacter m_sprt; // definice vÃ½Å™ezu ve spritesheetu
 	sf::Vector2i m_gridPos;
 
 	std::vector<std::vector<sf::Sprite>> m_frames;
@@ -29,8 +29,8 @@ private:
 	// timing for animation
 	sf::Clock m_clock;
 	sf::Time m_timeAccumulator = sf::Time::Zero;
-	float m_frameDuration = 0.3f; // seconds per frame, nastavte podle potøeby
-	int m_lastDirection = -2; // pomocné pro zjištìní zmìny smìru
+	float m_frameDuration = 0.3f; // seconds per frame, nastavte podle potÅ™eby
+	int m_lastDirection = -2; // pomocnÃ© pro zjiÅ¡tÄ›nÃ­ zmÄ›ny smÄ›ru
 
 	float m_playerSpeed = 3;
 

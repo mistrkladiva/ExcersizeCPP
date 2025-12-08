@@ -20,24 +20,24 @@ extern std::vector<eventData> GAME_EVENTS = {
 			{ eventConditions::isEventComplete, "Meet NPC"  }
 		},
 		{
-			{ eventActions::startDialogue, "Ahoj, ztratila jsem Náhrdelník" },
+			{ eventActions::startDialogue, "Ahoj, ztratila jsem NÃ¡hrdelnÃ­k" },
 			{ eventActions::eventComplete, "Ztraceny nahrdelnik" }
 		},
 		false
 	}
 };
 
-// Správná inicializace globální promìnné
+// SprÃ¡vnÃ¡ inicializace globÃ¡lnÃ­ promÄ›nnÃ©
 extern std::map<std::string, std::vector<std::string>> NPC_RANDOM_DIALOGUES = {
 	{ "Starosta", {
-		"Starosta øíká: Krásnı den, e?",
-		"Starosta øíká: Mìsto je v bezpeèí díky našim hrdinùm.",
-		"Starosta øíká: Máte nìjaké novinky z cest?"
+		"Starosta Å™Ã­kÃ¡: KrÃ¡snÃ½ den, Å¾e?",
+		"Starosta Å™Ã­kÃ¡: MÄ›sto je v bezpeÄÃ­ dÃ­ky naÅ¡im hrdinÅ¯m.",
+		"Starosta Å™Ã­kÃ¡: MÃ¡te nÄ›jakÃ© novinky z cest?"
 	} },
 	{ "Anna", {
-		"Anna øíká: Doufám, e najdu svùj náhrdelník brzy.",
-		"Anna øíká: Miluji procházky po lese.",
-		"Anna øíká: Mùj bratr je stateènı bojovník."
+		"Anna Å™Ã­kÃ¡: DoufÃ¡m, Å¾e najdu svÅ¯j nÃ¡hrdelnÃ­k brzy.",
+		"Anna Å™Ã­kÃ¡: Miluji prochÃ¡zky po lese.",
+		"Anna Å™Ã­kÃ¡: MÅ¯j bratr je stateÄnÃ½ bojovnÃ­k."
 	} }
 };
 
@@ -56,11 +56,11 @@ void GameEventsManager::checkEvent(std::string npcName)
 	for (auto& event : GAME_EVENTS) {
 		if (!event.eventCompleted) {
 			conditionsMet = true;
-			// Zkontrolovat všechny podmínky události
+			// Zkontrolovat vÅ¡echny podmÃ­nky udÃ¡losti
 			for (const auto& condition : event.eventConditions) {
 				switch (condition.conditionType) {
 				case eventConditions::isCollideWithNpc:
-					// Pøedpokládáme, e pokud jsme zde, kolize probìhla
+					// PÅ™edpoklÃ¡dÃ¡me, Å¾e pokud jsme zde, kolize probÄ›hla
 					if (condition.conditionValue != npcName) {
 						conditionsMet = false;
 					}
@@ -73,10 +73,10 @@ void GameEventsManager::checkEvent(std::string npcName)
 					break;
 				}
 				if (!conditionsMet) {
-					break; // Pokud jedna podmínka není splnìna, nemusíme pokraèovat
+					break; // Pokud jedna podmÃ­nka nenÃ­ splnÄ›na, nemusÃ­me pokraÄovat
 				}
 			}
-			// Pokud jsou všechny podmínky splnìny, vykonej akce
+			// Pokud jsou vÅ¡echny podmÃ­nky splnÄ›ny, vykonej akce
 			if (conditionsMet) {
 				for (const auto& action : event.eventActions) {
 					switch (action.actionType) {

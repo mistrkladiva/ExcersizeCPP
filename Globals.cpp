@@ -16,15 +16,15 @@ extern std::vector<std::vector<TileCollider>> tileGrid((int)MAP_DATA.mapHeight, 
 
 
 /// <summary>
-/// Vyhledá ve vrstvì s názvem "items" dladici, která má atribut "interactive" se zadanım názvem.
+/// VyhledÃ¡ ve vrstvÄ› s nÃ¡zvem "items" dlaÅ¾dici, kterÃ¡ mÃ¡ atribut "interactive" se zadanÃ½m nÃ¡zvem.
 /// </summary>
-/// <param name="interactiveName">Název hodnoty atributu "interactive", kterou hledáme na dladici.</param>
+/// <param name="interactiveName">NÃ¡zev hodnoty atributu "interactive", kterou hledÃ¡me na dlaÅ¾dici.</param>
 /// <returns>Reference na nalezenou Tile. Pokud vrstva "items" neexistuje, je vyhozena std::runtime_error.
-/// Pokud ádná odpovídající dladice není nalezena, funkce vypíše zprávu do std::cout a vrátí referenci na novì alokovanı objekt Tile s id "-1"
-/// (pozn.: tento objekt je alokován pomocí new, take vlastnictví/ivotnost mùe vést k úniku pamìti, pokud není správnì uvolnìn).</returns>
+/// Pokud Å¾Ã¡dnÃ¡ odpovÃ­dajÃ­cÃ­ dlaÅ¾dice nenÃ­ nalezena, funkce vypÃ­Å¡e zprÃ¡vu do std::cout a vrÃ¡tÃ­ referenci na novÄ› alokovanÃ½ objekt Tile s id "-1"
+/// (pozn.: tento objekt je alokovÃ¡n pomocÃ­ new, takÅ¾e vlastnictvÃ­/Å¾ivotnost mÅ¯Å¾e vÃ©st k Ãºniku pamÄ›ti, pokud nenÃ­ sprÃ¡vnÄ› uvolnÄ›n).</returns>
 Tile& get_interactive_item_tile(std::string interactiveName)
 {
-    // Najdi vrstvu s názvem "items"
+    // Najdi vrstvu s nÃ¡zvem "items"
     auto itemLayerIt = std::find_if(
         MAP_DATA.layers.begin(),
         MAP_DATA.layers.end(),
@@ -37,7 +37,7 @@ Tile& get_interactive_item_tile(std::string interactiveName)
 
     Layer& itemLayer = *itemLayerIt;
 
-    // Najdi dladici s atributem "interactive"
+    // Najdi dlaÅ¾dici s atributem "interactive"
     auto tileLayerIt = std::find_if(
         itemLayer.tiles.begin(),
         itemLayer.tiles.end(),
@@ -50,7 +50,7 @@ Tile& get_interactive_item_tile(std::string interactiveName)
 
     if (tileLayerIt == itemLayer.tiles.end()) {
 		
-		std::cout << "Interaktivní dladice nebyla nalezena ve vrstvì 'items'." << std::endl;
+		std::cout << "InteraktivnÃ­ dlaÅ¾dice nebyla nalezena ve vrstvÄ› 'items'." << std::endl;
 
 		Tile& emptyTile = *(new Tile{});
 		emptyTile.id = "-1";
@@ -62,7 +62,7 @@ Tile& get_interactive_item_tile(std::string interactiveName)
 
 bool insert_new_item_tile(const Tile& newTile)
 {
-    // Najdi vrstvu s názvem "items"
+    // Najdi vrstvu s nÃ¡zvem "items"
     auto itemLayerIt = std::find_if(
         MAP_DATA.layers.begin(),
         MAP_DATA.layers.end(),

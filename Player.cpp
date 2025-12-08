@@ -7,7 +7,7 @@ Player::Player(sf::RenderWindow* window, GameEventsManager& gameEventsManager, s
 	, m_gameEventsManager(gameEventsManager)
 {
 	loadCharacterSprites();
-	// clock u je implicitnì spuštìnı pøi vytvoøení
+	// clock uÅ¾ je implicitnÄ› spuÅ¡tÄ›nÃ½ pÅ™i vytvoÅ™enÃ­
 	m_timeAccumulator = sf::Time::Zero;
 	m_currentFrameIndex = 0;
 	m_lastDirection = -2;
@@ -16,7 +16,7 @@ Player::Player(sf::RenderWindow* window, GameEventsManager& gameEventsManager, s
 void Player::update(int direction, sf::Vector2f deltaPos)
 {
 
-	// mùe se pouít k nìjakému stavu, napø. pauza nebo dialog
+	// mÅ¯Å¾e se pouÅ¾Ã­t k nÄ›jakÃ©mu stavu, napÅ™. pauza nebo dialog
 	if (direction == -1) {
 		m_clock.restart();
 		return;
@@ -33,7 +33,7 @@ void Player::update(int direction, sf::Vector2f deltaPos)
 	//m_gameEventsManager.setDialoguePosition({ m_playerPos.x, m_playerPos.y - 100.f });
 }
 
-// vykreslování hráèe øeší MapGenerator pøes referenci na m_currentFrame
+// vykreslovÃ¡nÃ­ hrÃ¡Äe Å™eÅ¡Ã­ MapGenerator pÅ™es referenci na m_currentFrame
 void Player::draw()
 {
 	/*if (m_isDialogueActive)
@@ -42,10 +42,10 @@ void Player::draw()
 
 
 /// <summary>
-/// Posune hráèe o zadanı vektor s uplatnìním rychlosti, omezí pohyb na povolenou herní oblast a aktualizuje pozici grafického rámce.
+/// Posune hrÃ¡Äe o zadanÃ½ vektor s uplatnÄ›nÃ­m rychlosti, omezÃ­ pohyb na povolenou hernÃ­ oblast a aktualizuje pozici grafickÃ©ho rÃ¡mce.
 /// </summary>
-/// <param name="deltaPos">Vektor posunu (x, y). Hodnoty jsou vynásobeny rychlostí hráèe a pøièteny k aktuální pozici;
-/// pøesun se provede pouze pokud vısledná pozice a oblast 100×100 od ní jsou uvnitø GAME_AREA.</param>
+/// <param name="deltaPos">Vektor posunu (x, y). Hodnoty jsou vynÃ¡sobeny rychlostÃ­ hrÃ¡Äe a pÅ™iÄteny k aktuÃ¡lnÃ­ pozici;
+/// pÅ™esun se provede pouze pokud vÃ½slednÃ¡ pozice a oblast 100Ã—100 od nÃ­ jsou uvnitÅ™ GAME_AREA.</param>
 void Player::move(sf::Vector2f deltaPos)
 {
 	sf::Vector2f newPos = {
@@ -58,12 +58,12 @@ void Player::move(sf::Vector2f deltaPos)
 		int row = m_collidedTilePos.y;
 		int col = m_collidedTilePos.x;
 
-		// souèasná kolizní dladice (x,y)
+		// souÄasnÃ¡ koliznÃ­ dlaÅ¾dice (x,y)
 		sf::Vector2i currentTile(col, row);
 
 		if (tileGrid[row][col].name != "") {
 			if (m_lastColliderTile != currentTile) {
-				// novı vstup do kolizního boxu této dladice
+				// novÃ½ vstup do koliznÃ­ho boxu tÃ©to dlaÅ¾dice
 				m_lastColliderTile = currentTile;
 				m_gameEventsManager.checkEvent(tileGrid[row][col].name);
 			}
@@ -76,7 +76,7 @@ void Player::move(sf::Vector2f deltaPos)
 		return;
 	} else
 	{
-		// ádná kolize -> umonit znovuvstup pozdìji
+		// Å¾Ã¡dnÃ¡ kolize -> umoÅ¾nit znovuvstup pozdÄ›ji
 		if (m_lastColliderTile.x != -1 || m_lastColliderTile.y != -1) {
 			m_lastColliderTile = sf::Vector2i(-1, -1);
 		}
@@ -95,11 +95,11 @@ void Player::move(sf::Vector2f deltaPos)
 
 bool Player::isCollision(sf::Vector2f& playerPos)
 {
-	// Lokalní rozmìry sprite (width/height) - safe
+	// LokalnÃ­ rozmÄ›ry sprite (width/height) - safe
 	sf::FloatRect local = m_currentFrame.getLocalBounds();
 	sf::Vector2f origin = m_currentFrame.getOrigin();
 
-	// Vypoèti AABB pro novou pozici (newPos je svìtová pozice, kterou chceš pouít)
+	// VypoÄti AABB pro novou pozici (newPos je svÄ›tovÃ¡ pozice, kterou chceÅ¡ pouÅ¾Ã­t)
 	/*sf::FloatRect playerBound{
 		playerPos.x - origin.x,
 		playerPos.y - origin.y,
@@ -107,7 +107,7 @@ bool Player::isCollision(sf::Vector2f& playerPos)
 		local.height
 	};*/
 
-	// m_sprt.spriteCollider.left a top je vdy nula posun kolizního obdélníku je na základì pozice spritu
+	// m_sprt.spriteCollider.left a top je vÅ¾dy nula posun koliznÃ­ho obdÃ©lnÃ­ku je na zÃ¡kladÄ› pozice spritu
 	sf::FloatRect playerBoxCollider{
 		playerPos.x - 20,
 		playerPos.y + 30,
@@ -141,8 +141,8 @@ bool Player::isCollision(sf::Vector2f& playerPos)
 
 
 /// <summary>
-/// Naète jednotlivé snímky (sf::Sprite) postavy ze spritesheetu a uloí je do èlenské promìnné m_frames.
-/// kadá øada v m_frames odpovídá jednomu smìru animace (idle, left, right, up, down).
+/// NaÄte jednotlivÃ© snÃ­mky (sf::Sprite) postavy ze spritesheetu a uloÅ¾Ã­ je do ÄlenskÃ© promÄ›nnÃ© m_frames.
+/// kaÅ¾dÃ¡ Å™ada v m_frames odpovÃ­dÃ¡ jednomu smÄ›ru animace (idle, left, right, up, down).
 /// </summary>
 void Player::loadCharacterSprites()
 {
@@ -165,9 +165,9 @@ void Player::loadCharacterSprites()
 }
 
 /// <summary>
-/// Aktualizuje aktuální snímek animace hráèe podle smìru a akumulovaného èasu.
+/// Aktualizuje aktuÃ¡lnÃ­ snÃ­mek animace hrÃ¡Äe podle smÄ›ru a akumulovanÃ©ho Äasu.
 /// </summary>
-/// <param name="direction">Index smìru animace; pouívá se k vıbìru seznamu snímkù pro danı smìr.</param>
+/// <param name="direction">Index smÄ›ru animace; pouÅ¾Ã­vÃ¡ se k vÃ½bÄ›ru seznamu snÃ­mkÅ¯ pro danÃ½ smÄ›r.</param>
 void Player::animation(int direction)
 {
 	m_timeAccumulator += m_clock.restart();
