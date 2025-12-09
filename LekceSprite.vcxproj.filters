@@ -64,6 +64,9 @@
     <None Include="README.md">
       <Filter>Soubory zdrojů</Filter>
     </None>
+    <None Include="assets\audio\background-music.ogg">
+      <Filter>Soubory zdrojů\assets</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\info.txt">

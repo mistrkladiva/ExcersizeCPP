@@ -7,6 +7,7 @@ Player::Player(sf::RenderWindow* window, GameEventsManager& gameEventsManager, s
 	, m_gameEventsManager(gameEventsManager)
 {
 	loadCharacterSprites();
+	m_playerPos = getNpcPosInTileGrid(sf::Vector2(7, 11));
 	// clock už je implicitně spuštěný při vytvoření
 	m_timeAccumulator = sf::Time::Zero;
 	m_currentFrameIndex = 0;
@@ -48,6 +49,7 @@ void Player::draw()
 /// přesun se provede pouze pokud výsledná pozice a oblast 100×100 od ní jsou uvnitř GAME_AREA.</param>
 void Player::move(sf::Vector2f deltaPos)
 {
+	// TODO: ošetřit pohyb diagonálně (normalizovat vektor) při diagonálním pohybu sprite vlevo nebo vpravo
 	sf::Vector2f newPos = {
 		m_playerPos.x + m_playerSpeed * deltaPos.x,
 		m_playerPos.y + m_playerSpeed * deltaPos.y
@@ -61,13 +63,14 @@ void Player::move(sf::Vector2f deltaPos)
 		// současná kolizní dlaždice (x,y)
 		sf::Vector2i currentTile(col, row);
 
+		// TODO: při kontaktu s npc nastavit sprite npc na talk
 		if (tileGrid[row][col].name != "") {
 			if (m_lastColliderTile != currentTile) {
 				// nový vstup do kolizního boxu této dlaždice
 				m_lastColliderTile = currentTile;
 				m_gameEventsManager.checkEvent(tileGrid[row][col].name);
 			}
-			/*if (tileGrid[row][col].name == "Starosta") {
+			/*if (tileGrid[row][col].name == "Barrel") {
 				m_dialogue.setDialogueMessage("It's a barrel. It looks empty.");
 				checkEvent("Starosta");
 				m_isDialogueActive = true;
@@ -183,4 +186,13 @@ void Player::animation(int direction)
 sf::Sprite& Player::getCurrentFrame()
 {
 	return m_currentFrame;
+}
+
+sf::Vector2f Player::getNpcPosInTileGrid(sf::Vector2i gridPos)
+{
+	// výpočet umístění npc na střed dlaždice mřížky
+	float centerX = std::floorf(((float)gridPos.x * MAP_DATA.tileSize) + (MAP_DATA.tileSize / 2));
+	float centerY = std::floorf(((float)gridPos.y * MAP_DATA.tileSize) + (MAP_DATA.tileSize / 2));
+
+	return sf::Vector2f(centerX, centerY);;
 }

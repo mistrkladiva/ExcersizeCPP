@@ -10,7 +10,8 @@ class Player
 public:
 
 	int direction; // idle=0, left=1, right=2, up=3, down=4
-	sf::Vector2f m_playerPos = { WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 };
+	// TODO: vypočítat souřadnice podle gridu mapy
+	sf::Vector2f m_playerPos;
 	Player(sf::RenderWindow* window, GameEventsManager& gameEventsManager, sf::Texture& spritesheet, SpriteCharacter sprt);
 
 	void update(int direction, sf::Vector2f deltaPos);
@@ -48,5 +49,6 @@ private:
 	void animation(int direction);
 	void move(sf::Vector2f deltaPos);
 	bool isCollision(sf::Vector2f& playerPos);
+	sf::Vector2f getNpcPosInTileGrid(sf::Vector2i gridPos);
 };
 

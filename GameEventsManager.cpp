@@ -3,25 +3,37 @@
 
 extern std::vector<eventData> GAME_EVENTS = {
 	{
-		"Meet NPC",
+		"Starosta-prvni informace",
 		{
 			{ eventConditions::isCollideWithNpc, "Starosta" },
 		},
 		{
-			{ eventActions::startDialogue, "Hello, traveler! Welcome to our town." },
-			{ eventActions::eventComplete, "Meet NPC" }
+			{ eventActions::startDialogue, "Mojí dceři někdo ukradl prsten,\nkdyž ho najdeš dobře se ti odměním." },
+			{ eventActions::eventComplete, "Starosta-prvni informace" }
 		},
 		false
 	},
 	{
-		"Ztraceny nahrdelnik",
+		"Anna-prvni informace",
 		{
 			{ eventConditions::isCollideWithNpc, "Anna" },
-			{ eventConditions::isEventComplete, "Meet NPC"  }
+			{ eventConditions::isEventComplete, "Starosta-prvni informace"  }
 		},
 		{
-			{ eventActions::startDialogue, "Ahoj, ztratila jsem Náhrdelník" },
-			{ eventActions::eventComplete, "Ztraceny nahrdelnik" }
+			{ eventActions::startDialogue, "Viděla jsem někoho u rybníka, něco tam házel." },
+			{ eventActions::eventComplete, "Anna-prvni informace" }
+		},
+		false
+	},
+	{
+		"Helga-prvni informace",
+		{
+			{ eventConditions::isCollideWithNpc, "Helga" },
+			{ eventConditions::isEventComplete, "Anna-prvni informace"  }
+		},
+		{
+			{ eventActions::startDialogue, "Do rybníka pořád někdo něco hází.\n půjčím ti háček, můžeš si to také zkusit,\n ale udici si někde sežeň sám." },
+			{ eventActions::eventComplete, "Helga-prvni informace" }
 		},
 		false
 	}
@@ -29,16 +41,41 @@ extern std::vector<eventData> GAME_EVENTS = {
 
 // Správná inicializace globální proměnné
 extern std::map<std::string, std::vector<std::string>> NPC_RANDOM_DIALOGUES = {
-	{ "Starosta", {
-		"Starosta říká: Krásný den, že?",
-		"Starosta říká: Město je v bezpečí díky našim hrdinům.",
-		"Starosta říká: Máte nějaké novinky z cest?"
-	} },
-	{ "Anna", {
-		"Anna říká: Doufám, že najdu svůj náhrdelník brzy.",
-		"Anna říká: Miluji procházky po lese.",
-		"Anna říká: Můj bratr je statečný bojovník."
-	} }
+	{
+		"Starosta", {
+		"Starosta: Zájímá mě kdo prsten vzal.",
+		"Starosta: Předpokládám, že stále pátráš po zloději.",
+		"Starosta: Zatím jsem zloděje nechytil, ale až do dostanu..."
+		}
+	},
+	{
+		"Anna", {
+		"Anna: Nejlepší jsou maliny z lesa.",
+		"Anna: Miluji procházky po lese.",
+		"Anna: Občas něco zaslechnu."
+		}
+	},
+	{
+		"Barrel", {
+		"Občas sem někdo hodí odpadky.",
+		"Teď tu nic tu není",
+		"Jen prázdný sud, může to být bezva schovka."
+		}
+	},
+	{
+		"Helga", {
+		"Jen si tu lovím ryby.",
+		"Nejraději mám kapra na másle.",
+		"V rybníku je spousta haraburdí."
+		}
+	},
+	{
+		"Bench", {
+		"Odtud se dobře chytají ryby.",
+		"Helga je tu od rána do večera.",
+		"Nejlepší místo pro všechny rybáře."
+		}
+	}
 };
 
 GameEventsManager::GameEventsManager(DialogueManager& dialogueManager)
@@ -72,6 +109,7 @@ void GameEventsManager::checkEvent(std::string npcName)
 					conditionsMet = false;
 					break;
 				}
+
 				if (!conditionsMet) {
 					break; // Pokud jedna podmínka není splněna, nemusíme pokračovat
 				}
@@ -81,8 +119,10 @@ void GameEventsManager::checkEvent(std::string npcName)
 				for (const auto& action : event.eventActions) {
 					switch (action.actionType) {
 					case eventActions::startDialogue:
-						//std::cout << "Dialogue: " << action.actionValue << std::endl;
 						m_dialogueManager.setDialogueMessage(action.actionValue);
+						break;
+					case eventActions::startRandomDialogue:
+						showRandomDialogue(action.actionValue);
 						break;
 					case eventActions::eventComplete:
 						event.eventCompleted = true;

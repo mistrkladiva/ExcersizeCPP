@@ -36,8 +36,7 @@ struct TileCollider {
     // nebo třeba enum
 };
 
-
-
+// Struktury pro herní události
 enum class eventConditions {
 	isCollideWithNpc = 0,
 	isEventComplete = 1
@@ -45,7 +44,8 @@ enum class eventConditions {
 
 enum class eventActions {
 	startDialogue = 0,
-	eventComplete = 1
+	eventComplete = 1,
+	startRandomDialogue = 2
 };
 
 struct conditionData
