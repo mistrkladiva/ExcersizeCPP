@@ -33,21 +33,54 @@ struct TileCollider {
 	std::string name = "";
     sf::FloatRect rect;
     int type;            // 0 = nic, 1 = wall, 2 = trap, 3 = building...
-    // nebo t¯eba enum
+    // nebo t≈ôeba enum
+};
+
+// Struktury pro hern√≠ ud√°losti
+enum class eventConditions {
+	isCollideWithNpc = 0,
+	isEventComplete = 1
+};
+
+enum class eventActions {
+	startDialogue = 0,
+	eventComplete = 1,
+	startRandomDialogue = 2
+};
+
+struct conditionData
+{
+	eventConditions conditionType;
+	std::string conditionValue;
+};
+
+struct actionData
+{
+	eventActions actionType;
+	std::string actionValue;
+};
+
+struct eventData
+{
+	std::string eventName;
+	std::vector<conditionData> eventConditions;
+	std::vector<actionData> eventActions;
+	bool eventCompleted = false;
 };
 
 
-// Definice struktur pro mapu a jejich serializaci pomocÌ nlohmann::json
 
-// UûiteËn˝ alias pro mapu atribut˘, kde klÌË i hodnota jsou stringy
+// Definice struktur pro mapu a jejich serializaci pomoc√≠ nlohmann::json
+
+// U≈æiteƒçn√Ω alias pro mapu atribut≈Ø, kde kl√≠ƒç i hodnota jsou stringy
 using Attributes = std::map<std::string, std::string>;
 
-// --- 1. Struktura pro jednotlivou dlaûdici (Tile) ---
+// --- 1. Struktura pro jednotlivou dla≈ædici (Tile) ---
 struct Tile {
     std::string id;
     int x;
     int y;
-    // Pole 'attributes' je volitelnÈ, pokud se v JSON nevyskytuje, bude mapa pr·zdn·
+    // Pole 'attributes' je voliteln√©, pokud se v JSON nevyskytuje, bude mapa pr√°zdn√°
 	std::optional<Attributes> attributes;
 };
 
@@ -68,19 +101,19 @@ inline void from_json(const nlohmann::json& j, Tile& t)
 // --- 2. Struktura pro vrstvu mapy (Layer) ---
 struct Layer {
     std::string name;
-    std::vector<Tile> tiles; // Seznam objekt˘ Tile
+    std::vector<Tile> tiles; // Seznam objekt≈Ø Tile
     bool collider;
 };
 
 // Makro pro automatickou serializaci/deserializaci struktury Layer
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Layer, name, tiles, collider)
 
-// --- 3. HlavnÌ struktura mapy (MapData) ---
+// --- 3. Hlavn√≠ struktura mapy (MapData) ---
 struct MapData {
     int tileSize;
     float mapWidth;
     float mapHeight;
-    std::vector<Layer> layers; // Seznam objekt˘ Layer
+    std::vector<Layer> layers; // Seznam objekt≈Ø Layer
 };
 
 // Makro pro automatickou serializaci/deserializaci struktury MapData

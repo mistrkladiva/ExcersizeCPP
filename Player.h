@@ -3,14 +3,16 @@
 #include "Structs.h"
 #include "Globals.h"
 #include "DialogueManager.h"
+#include "GameEventsManager.h"
 
 class Player
 {
 public:
 
 	int direction; // idle=0, left=1, right=2, up=3, down=4
-	sf::Vector2f m_playerPos = { WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 };
-	Player(sf::RenderWindow* window, sf::Texture& spritesheet, SpriteCharacter sprt);
+	// TODO: vypoƒç√≠tat sou≈ôadnice podle gridu mapy
+	sf::Vector2f m_playerPos;
+	Player(sf::RenderWindow* window, GameEventsManager& gameEventsManager, sf::Texture& spritesheet, SpriteCharacter sprt);
 
 	void update(int direction, sf::Vector2f deltaPos);
 	void draw();
@@ -20,7 +22,7 @@ public:
 private:
     sf::RenderWindow* m_window;
     sf::Texture& m_spritesheet;
-	SpriteCharacter m_sprt; // definice v˝¯ezu ve spritesheetu
+	SpriteCharacter m_sprt; // definice v√Ω≈ôezu ve spritesheetu
 
 	std::vector<std::vector<sf::Sprite>> m_frames;
 	
@@ -30,14 +32,16 @@ private:
 	// timing for animation
 	sf::Clock m_clock;
 	sf::Time m_timeAccumulator = sf::Time::Zero;
-	float m_frameDuration = 0.10f; // seconds per frame, nastavte podle pot¯eby
-	int m_lastDirection = -2; // pomocnÈ pro zjiötÏnÌ zmÏny smÏru
+	float m_frameDuration = 0.10f; // seconds per frame, nastavte podle pot≈ôeby
+	int m_lastDirection = -2; // pomocn√© pro zji≈°tƒõn√≠ zmƒõny smƒõru
 
 	float m_playerSpeed = 3;
 
 	sf::Vector2i m_collidedTilePos;
 
-	DialogueManager m_dialogue;
+	GameEventsManager m_gameEventsManager;
+
+	sf::Vector2i m_lastColliderTile = sf::Vector2i(-1, -1);
 	
 	bool m_isDialogueActive = false;
 
@@ -45,5 +49,6 @@ private:
 	void animation(int direction);
 	void move(sf::Vector2f deltaPos);
 	bool isCollision(sf::Vector2f& playerPos);
+	sf::Vector2f getNpcPosInTileGrid(sf::Vector2i gridPos);
 };
 

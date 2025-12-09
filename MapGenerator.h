@@ -18,7 +18,7 @@ private:
     std::vector<sf::Sprite> m_mapSprites;
     std::vector<sf::Sprite> m_topLayer;
 
-    // HLAVNÕ ZMÃNA: ukazatele, ne kopie
+    // HLAVN√ç ZMƒöNA: ukazatele, ne kopie
     std::vector<sf::Sprite*> m_overlappingLayer;
 
     std::vector<sf::Sprite*> m_charactersSprite;

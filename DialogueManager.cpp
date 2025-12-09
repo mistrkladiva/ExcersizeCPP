@@ -23,7 +23,15 @@ void DialogueManager::setTextObject()
 
 void DialogueManager::setDialogueMessage(const std::string& message)
 {
-	m_textObject.setString(message);
+	setDialogueMessage(message, m_durationSeconds);
+}
+
+void DialogueManager::setDialogueMessage(const std::string& message, float seconds)
+{
+	m_textObject.setString(sf::String::fromUtf8(message.begin(), message.end()));
+	m_durationSeconds = seconds;
+	m_dialogueClock.restart();
+	m_isActive = true;
 }
 
 void DialogueManager::setDialoguePosition(sf::Vector2f position)
@@ -34,6 +42,16 @@ void DialogueManager::setDialoguePosition(sf::Vector2f position)
 
 void DialogueManager::draw()
 {
+	if (!m_isActive)
+		return;
+
+	// pokud čas vypršel, deaktivuj dialog
+	if (m_dialogueClock.getElapsedTime().asSeconds() >= m_durationSeconds)
+	{
+		m_isActive = false;
+		return;
+	}
+
 	float textWidth = m_textObject.getLocalBounds().width + 20;
 	float textHeight = m_textObject.getLocalBounds().height + 20;
 

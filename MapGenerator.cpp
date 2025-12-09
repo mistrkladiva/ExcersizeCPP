@@ -1,5 +1,7 @@
-﻿#include "MapGenerator.h"
+#include "MapGenerator.h"
 #include <sstream>
+#include <algorithm>
+#include <iostream>
 
 MapGenerator::MapGenerator(sf::RenderWindow* window, sf::Texture& mapSpritesheet, MapData& mapData, std::vector<sf::Sprite*>& charactersSprite)
     : m_window(window),
@@ -14,6 +16,10 @@ void MapGenerator::loadTiles()
 {
     int tilesPerRow = m_mapSpritesheet.getSize().y / m_mapData.tileSize;
     int tilesPerCol = m_mapSpritesheet.getSize().x / m_mapData.tileSize;
+
+    // rezervuj prostor pro m_tiles (zabrání realokacím, které by invalidovaly pointery)
+    size_t expectedTiles = (size_t)tilesPerRow * (size_t)tilesPerCol;
+    m_tiles.reserve(expectedTiles);
 
     // načti tilesheet do vektoru
     for (int row = 0; row < tilesPerRow; row++)
@@ -33,14 +39,36 @@ void MapGenerator::loadTiles()
 
     m_overlappingLayer.clear();
 
-    // projdi vrstvy
+    // spočítej kolik dlaždic budeme přidávat do m_mapSprites a rezervuj (zabrání invalidaci pointerů)
+    size_t totalTilesInMap = 0;
+    for (const auto& layer : m_mapData.layers) totalTilesInMap += layer.tiles.size();
+    m_mapSprites.reserve(totalTilesInMap);
+
+    // projdi vrstvy (od konce směrem nahoru)
     for (int i = (int)m_mapData.layers.size() - 1; i >= 0; --i)
     {
         for (auto& tile : m_mapData.layers[i].tiles)
         {
-            int index = std::stoi(tile.id);
+            int index = -1;
+            try {
+                index = std::stoi(tile.id);
+            }
+            catch (const std::exception& ex) {
+                std::cerr << "Chybný tile.id (není číslo): '" << tile.id << "' - přeskočeno. Výjimka: " << ex.what() << std::endl;
+                continue;
+            }
+
             if (index < 0 || index >= (int)m_tiles.size()) {
-                std::cerr << "Chybný tile index: " << index << std::endl;
+                std::cerr << "Chybný tile index: " << index << " pro dlaždici na (" << tile.x << "," << tile.y << ")\n";
+                continue;
+            }
+
+            // bezpečnost: ověř bounds pro tileGrid
+            if (tile.y < 0 || tile.x < 0 ||
+                tile.y >= (int)tileGrid.size() ||
+                tile.x >= (int)(tileGrid.empty() ? 0 : tileGrid[0].size()))
+            {
+                std::cerr << "Tile koordináty mimo tileGrid: (" << tile.x << "," << tile.y << ") - přeskočeno\n";
                 continue;
             }
 
@@ -59,8 +87,9 @@ void MapGenerator::loadTiles()
                 auto& attrs = tile.attributes.value();
 
                 if (attrs.contains("custom_collider")) {
+                    std::string colliderStr = attrs["custom_collider"];
 
-                    sf::FloatRect customColliderRect = parseColliderString(attrs["custom_collider"]);
+                    sf::FloatRect customColliderRect = parseColliderString(colliderStr);
 
                     tileGrid[tile.y][tile.x].active = true;
                     if (attrs.contains("interactive"))

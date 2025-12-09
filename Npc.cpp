@@ -9,7 +9,7 @@ Npc::Npc(sf::RenderWindow* window, sf::Texture& spritesheet, SpriteCharacter& sp
 {
 	m_npcPos = getNpcPosInTileGrid(m_gridPos);
 	loadCharacterSprites();
-	// clock u je implicitnì spuštìnı pøi vytvoøení
+	// clock uÅ¾ je implicitnÄ› spuÅ¡tÄ›nÃ½ pÅ™i vytvoÅ™enÃ­
 	m_timeAccumulator = sf::Time::Zero;
 	m_currentFrameIndex = 0;
 	m_lastDirection = -2;
@@ -20,7 +20,7 @@ void Npc::update()
 	animation(0);
 }
 
-// vykreslování hráèe øeší MapGenerator pøes referenci na m_currentFrame
+// vykreslovÃ¡nÃ­ hrÃ¡Äe Å™eÅ¡Ã­ MapGenerator pÅ™es referenci na m_currentFrame
 void Npc::draw()
 {
 	//m_window->draw(m_currentFrame);
@@ -28,10 +28,10 @@ void Npc::draw()
 }
 
 /// <summary>
-/// Posune hráèe o zadanı vektor s uplatnìním rychlosti, omezí pohyb na povolenou herní oblast a aktualizuje pozici grafického rámce.
+/// Posune hrÃ¡Äe o zadanÃ½ vektor s uplatnÄ›nÃ­m rychlosti, omezÃ­ pohyb na povolenou hernÃ­ oblast a aktualizuje pozici grafickÃ©ho rÃ¡mce.
 /// </summary>
-/// <param name="deltaPos">Vektor posunu (x, y). Hodnoty jsou vynásobeny rychlostí hráèe a pøièteny k aktuální pozici;
-/// pøesun se provede pouze pokud vısledná pozice a oblast 100×100 od ní jsou uvnitø GAME_AREA.</param>
+/// <param name="deltaPos">Vektor posunu (x, y). Hodnoty jsou vynÃ¡sobeny rychlostÃ­ hrÃ¡Äe a pÅ™iÄteny k aktuÃ¡lnÃ­ pozici;
+/// pÅ™esun se provede pouze pokud vÃ½slednÃ¡ pozice a oblast 100Ã—100 od nÃ­ jsou uvnitÅ™ GAME_AREA.</param>
 void Npc::move(sf::Vector2f deltaPos)
 {
 	sf::Vector2f newPos = {
@@ -59,11 +59,11 @@ void Npc::move(sf::Vector2f deltaPos)
 
 bool Npc::isCollision(sf::Vector2f& playerPos)
 {
-	// Lokalní rozmìry sprite (width/height) - safe
+	// LokalnÃ­ rozmÄ›ry sprite (width/height) - safe
 	sf::FloatRect local = m_currentFrame.getLocalBounds();
 	sf::Vector2f origin = m_currentFrame.getOrigin();
 
-	// Vypoèti AABB pro novou pozici (newPos je svìtová pozice, kterou chceš pouít)
+	// VypoÄti AABB pro novou pozici (newPos je svÄ›tovÃ¡ pozice, kterou chceÅ¡ pouÅ¾Ã­t)
 	/*sf::FloatRect playerBound{
 		playerPos.x - origin.x,
 		playerPos.y - origin.y,
@@ -104,7 +104,7 @@ bool Npc::isCollision(sf::Vector2f& playerPos)
 
 sf::Vector2f Npc::getNpcPosInTileGrid(sf::Vector2i& gridPos)
 {
-	// vıpoèet umístìní npc na støed dladice møíky
+	// vÃ½poÄet umÃ­stÄ›nÃ­ npc na stÅ™ed dlaÅ¾dice mÅ™Ã­Å¾ky
 	float centerX = std::floorf(((float)gridPos.x * MAP_DATA.tileSize) + (MAP_DATA.tileSize / 2));
 	float centerY = std::floorf(((float)gridPos.y * MAP_DATA.tileSize) + (MAP_DATA.tileSize / 2));
 
@@ -113,13 +113,13 @@ sf::Vector2f Npc::getNpcPosInTileGrid(sf::Vector2i& gridPos)
 
 
 /// <summary>
-/// Naète jednotlivé snímky (sf::Sprite) postavy ze spritesheetu a uloí je do èlenské promìnné m_frames.
-/// kadá øada v m_frames odpovídá jednomu smìru animace (idle, left, right, up, down).
+/// NaÄte jednotlivÃ© snÃ­mky (sf::Sprite) postavy ze spritesheetu a uloÅ¾Ã­ je do ÄlenskÃ© promÄ›nnÃ© m_frames.
+/// kaÅ¾dÃ¡ Å™ada v m_frames odpovÃ­dÃ¡ jednomu smÄ›ru animace (idle, left, right, up, down).
 /// </summary>
 void Npc::loadCharacterSprites()
 {
-	// nastavení kolizního obdélníku je od 0,0 zde ještì není nastaven origin
-	// v pøipadì pohybu npc bude tøeba aktualizovat pozici kolizního boxu a ukládání do tileGrid
+	// nastavenÃ­ koliznÃ­ho obdÃ©lnÃ­ku je od 0,0 zde jeÅ¡tÄ› nenÃ­ nastaven origin
+	// v pÅ™ipadÄ› pohybu npc bude tÅ™eba aktualizovat pozici koliznÃ­ho boxu a uklÃ¡dÃ¡nÃ­ do tileGrid
 	sf::FloatRect playerBoxCollider{
 		m_npcPos.x + m_sprt.spriteCollider.left,
 		m_npcPos.y + m_sprt.spriteCollider.top,
@@ -129,7 +129,7 @@ void Npc::loadCharacterSprites()
 
 	m_npcColliderShape.setSize(sf::Vector2f(playerBoxCollider.width, playerBoxCollider.height));
 	m_npcColliderShape.setPosition((playerBoxCollider.left), (playerBoxCollider.top));
-	m_npcColliderShape.setFillColor(sf::Color(255, 0, 0, 100)); // èervená s prùhledností
+	m_npcColliderShape.setFillColor(sf::Color(255, 0, 0, 100)); // ÄervenÃ¡ s prÅ¯hlednostÃ­
 
 	m_tileCollider = { true, m_sprt.name, playerBoxCollider, 1 };
 
@@ -148,7 +148,7 @@ void Npc::loadCharacterSprites()
 			spr.setTexture(m_spritesheet);
 			spr.setTextureRect(sf::IntRect(x, y, (int)m_sprt.textureSize.width, (int)m_sprt.textureSize.height));
 			spr.setOrigin(m_sprt.textureSize.width / 2, m_sprt.textureSize.height / 2);
-			// tvrdé nastavení pozice spritù, pokud se bude pohybovat, je tøeba aktualizovat m_currentFrame pøi pohybu
+			// tvrdÃ© nastavenÃ­ pozice spritÅ¯, pokud se bude pohybovat, je tÅ™eba aktualizovat m_currentFrame pÅ™i pohybu
 			spr.setPosition(m_npcPos);
 			m_frames[row].push_back(spr);
 			
@@ -157,9 +157,9 @@ void Npc::loadCharacterSprites()
 }
 
 /// <summary>
-/// Aktualizuje aktuální snímek animace hráèe podle smìru a akumulovaného èasu.
+/// Aktualizuje aktuÃ¡lnÃ­ snÃ­mek animace hrÃ¡Äe podle smÄ›ru a akumulovanÃ©ho Äasu.
 /// </summary>
-/// <param name="direction">Index smìru animace; pouívá se k vıbìru seznamu snímkù pro danı smìr.</param>
+/// <param name="direction">Index smÄ›ru animace; pouÅ¾Ã­vÃ¡ se k vÃ½bÄ›ru seznamu snÃ­mkÅ¯ pro danÃ½ smÄ›r.</param>
 void Npc::animation(int direction)
 {
 	m_timeAccumulator += m_clock.restart();

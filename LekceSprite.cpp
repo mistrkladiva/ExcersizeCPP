@@ -1,5 +1,6 @@
-﻿#include "Structs.h" // Ujistit se, že je zahrnutá definice Layer
+#include "Structs.h"
 #include <iostream>
+#include <SFML/Audio.hpp>
 #include "Player.h"
 #include "MapGenerator.h"
 #include "Npc.h"
@@ -10,6 +11,16 @@ int main()
         std::cout << "Načítání mapy selhalo nebo mapa je prázdná." << std::endl;
         return 0;
     }
+
+    sf::Music music;
+    if (!music.openFromFile("assets/audio/background-music.ogg")) {
+        return 1;
+    }
+
+    music.setLoop(true);
+    music.setVolume(30); // tišší
+    music.play();
+
 
 #pragma region Testování získání interaktivní item dlaždice a vložení dlaždice
     Tile& interactiveTile = get_interactive_item_tile("neco");
@@ -24,7 +35,7 @@ int main()
         7,
         Attributes{
             {"custom_collider", "59,110,20,5"},
-            {"interactive", "barrel"}
+            {"interactive", "Barrel"}
         }
     };
 
@@ -52,30 +63,40 @@ int main()
         return 0;
     }
 
-    Direction playerSpriteDirection = Direction::Down;
+	DialogueManager gameDialogue(&window);
+
+	GameEventsManager gameEventsManager(gameDialogue);
+
+    Direction playerSpriteDirection = Direction::Idle;
     sf::Vector2f playerDirection = { 0,0 };
 
     SpriteCharacter playerSprt;
 	playerSprt = { "Hero", 6, 4, sf::FloatRect(0, 0, 100,100), sf::FloatRect(0.f, 0.f, 50.f, 20.f) };
-    Player player(&window, charactersSpritesheet, playerSprt);
+    Player player(&window, gameEventsManager, charactersSpritesheet, playerSprt);
 
-    SpriteCharacter npc1Sprt;
-    npc1Sprt = { "Npc1", 6, 4, sf::FloatRect(400.f, 0.f, 100.f,100.f), sf::FloatRect(-25.f, 30.f, 50.f, 20.f) };
-    Npc npc1(&window, charactersSpritesheet, npc1Sprt, sf::Vector2i(4,3));
+    SpriteCharacter anna;
+    anna = { "Anna", 6, 4, sf::FloatRect(400.f, 0.f, 100.f,100.f), sf::FloatRect(-25.f, 30.f, 50.f, 20.f) };
+    Npc npc1(&window, charactersSpritesheet, anna, sf::Vector2i(12,5));
 
-    SpriteCharacter npc2Sprt;
-    npc2Sprt = { "Npc2", 6, 4, sf::FloatRect(0.f, 600.f, 100.f,100.f), sf::FloatRect(-40.f, 30.f, 80.f, 20.f) };
-    Npc npc2(&window, charactersSpritesheet, npc2Sprt, sf::Vector2i(11, 9));
+    SpriteCharacter helga;
+    helga = { "Helga", 6, 4, sf::FloatRect(400.f, 600.f, 100.f,100.f), sf::FloatRect(-25.f, 30.f, 50.f, 20.f) };
+    Npc npc3(&window, charactersSpritesheet, helga, sf::Vector2i(22, 9));
+
+    SpriteCharacter starosta;
+    starosta = { "Starosta", 6, 4, sf::FloatRect(0.f, 600.f, 100.f,100.f), sf::FloatRect(-40.f, 30.f, 80.f, 20.f) };
+    Npc npc2(&window, charactersSpritesheet, starosta, sf::Vector2i(16, 13));
 
     std::vector<sf::Sprite*> charactersSprite;
     charactersSprite.push_back(&player.getCurrentFrame());
 	charactersSprite.push_back(&npc1.getCurrentFrame());
     charactersSprite.push_back(&npc2.getCurrentFrame());
+    charactersSprite.push_back(&npc3.getCurrentFrame());
 
     MapGenerator map01(&window, mapLevel01Spritesheet, MAP_DATA, charactersSprite);
 
-    player.update((int)playerSpriteDirection, playerDirection);
+	gameDialogue.setDialogueMessage("To je dneska zase den,\nmám pocit, že to bude perný den.", 5.f);
 
+    player.update((int)playerSpriteDirection, playerDirection);
 
     while (window.isOpen())
     {
@@ -111,14 +132,25 @@ int main()
         defaultView.setCenter(sf::Vector2f(player.m_playerPos));
         window.setView(defaultView);
         
-		player.update((int)playerSpriteDirection, playerDirection);
+        if (!gameDialogue.isDialogueActive()) {
+            player.update((int)playerSpriteDirection, playerDirection);
+        }
+        else {
+            // pokud je dialog aktivní, zastav pohyb hráče
+            player.update((int)Direction::dialogue, sf::Vector2f{ 0,0 });
+        }
+		
         npc1.update();
 		npc2.update();
+        npc3.update();
         map01.drawMap();
         player.draw();
 		// vykresluje jen kolizní obdélník
 		npc1.draw();
 		npc2.draw();
+        npc3.draw();
+		gameDialogue.setDialoguePosition(sf::Vector2f(player.m_playerPos.x, player.m_playerPos.y - 100.f));
+		gameDialogue.draw();
         window.display();
     }
 }

@@ -39,6 +39,9 @@
     <ClCompile Include="Npc.cpp">
       <Filter>Zdrojové soubory</Filter>
     </ClCompile>
+    <ClCompile Include="GameEventsManager.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\garden.png">
@@ -60,6 +63,9 @@
     </None>
     <None Include="README.md">
       <Filter>Soubory zdrojů</Filter>
+    </None>
+    <None Include="assets\audio\background-music.ogg">
+      <Filter>Soubory zdrojů\assets</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +96,9 @@
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
     <ClInclude Include="Npc.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEventsManager.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
   </ItemGroup>
