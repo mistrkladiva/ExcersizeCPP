@@ -240,7 +240,7 @@
           "y": 17,
           "attributes": {
             "custom_collider": "59,90,20,38",
-            "interactive": "Barrel"
+            "interactive": "Barrel-interactive"
           }
         },
         {

@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="DialogueManager.cpp" />
     <ClCompile Include="GameEventsManager.cpp" />
     <ClCompile Include="Globals.cpp" />
@@ -158,6 +159,7 @@
     <Text Include="assets\info.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="DialogueManager.h" />
     <ClInclude Include="GameEventsManager.h" />
     <ClInclude Include="Globals.h" />
