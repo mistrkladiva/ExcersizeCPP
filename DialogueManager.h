@@ -19,6 +19,7 @@ private:
 	sf::Text m_textObject;
 	sf::RectangleShape m_background;
 
+
 	void setTextObject();
 
 	// nové členy pro řízení zobrazení dialogu

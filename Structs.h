@@ -28,6 +28,7 @@ enum class Direction {
 	dialogue = 5
 };
 
+// Struktura pro kolizní dlaždice
 struct TileCollider {
     bool active = false;
 	std::string name = "";
@@ -45,7 +46,8 @@ enum class eventConditions {
 enum class eventActions {
 	startDialogue = 0,
 	eventComplete = 1,
-	startRandomDialogue = 2
+	startRandomDialogue = 2,
+	playDialogueSound = 3
 };
 
 struct conditionData
@@ -68,6 +70,18 @@ struct eventData
 	bool eventCompleted = false;
 };
 
+struct RandomDialogueData
+{
+	std::string soundName;
+	std::string message;
+};
+
+
+// Struktura pro Audio a dialogy
+struct AudioData {
+	std::string audioName;
+	std::string audioFilePath;
+};
 
 
 // Definice struktur pro mapu a jejich serializaci pomocí nlohmann::json

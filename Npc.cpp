@@ -23,8 +23,7 @@ void Npc::update()
 // vykreslování hráče řeší MapGenerator přes referenci na m_currentFrame
 void Npc::draw()
 {
-	//m_window->draw(m_currentFrame);
-	m_window->draw(m_npcColliderShape);
+	//m_window->draw(m_npcColliderShape);
 }
 
 /// <summary>

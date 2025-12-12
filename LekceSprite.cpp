@@ -1,6 +1,7 @@
 #include "Structs.h"
 #include <iostream>
 #include <SFML/Audio.hpp>
+#include "AudioManager.h"
 #include "Player.h"
 #include "MapGenerator.h"
 #include "Npc.h"
@@ -12,15 +13,45 @@ int main()
         return 0;
     }
 
-    sf::Music music;
-    if (!music.openFromFile("assets/audio/background-music.ogg")) {
-        return 1;
+	AudioManager audioManager;
+	AudioData backgroundMusicData = { "background-music", "assets/audio/background-music.ogg" };
+    if (!audioManager.playMusic(backgroundMusicData)) {
+		return 1;
     }
 
-    music.setLoop(true);
-    music.setVolume(30); // tišší
-    music.play();
+    std::vector<AudioData> dialogues = {
+        { "starosta-1", "assets/audio/dialogues/starosta-1.mp3" },
+        { "starosta-2", "assets/audio/dialogues/starosta-2.mp3" },
+        { "starosta-end", "assets/audio/dialogues/starosta-end.mp3" },
+        { "narrator-1", "assets/audio/dialogues/narrator-1.mp3" },
+        { "narrator-2", "assets/audio/dialogues/narrator-2.mp3" },
+        { "narrator-3", "assets/audio/dialogues/narrator-3.mp3" },
+        { "narrator-4", "assets/audio/dialogues/narrator-4.mp3" },
+        { "anna-1", "assets/audio/dialogues/anna-1.mp3" },
+        { "helga-1", "assets/audio/dialogues/helga-1.mp3" },
+        { "helga-2", "assets/audio/dialogues/helga-2.mp3" },
+        { "rnd-anna-1", "assets/audio/dialogues/rnd-anna-1.mp3" },
+        { "rnd-anna-2", "assets/audio/dialogues/rnd-anna-2.mp3" },
+        { "rnd-anna-3", "assets/audio/dialogues/rnd-anna-3.mp3" },
+        { "rnd-barrel-1", "assets/audio/dialogues/rnd-barrel-1.mp3" },
+        { "rnd-barrel-2", "assets/audio/dialogues/rnd-barrel-2.mp3" },
+        { "rnd-barrel-3", "assets/audio/dialogues/rnd-barrel-3.mp3" },
+        { "rnd-bench-1", "assets/audio/dialogues/rnd-bench-1.mp3" },
+        { "rnd-bench-2", "assets/audio/dialogues/rnd-bench-2.mp3" },
+        { "rnd-bench-3", "assets/audio/dialogues/rnd-bench-3.mp3" },
+        { "rnd-helga-1", "assets/audio/dialogues/rnd-helga-1.mp3" },
+        { "rnd-helga-2", "assets/audio/dialogues/rnd-helga-2.mp3" },
+		{ "rnd-helga-3", "assets/audio/dialogues/rnd-helga-3.mp3" },
+        { "rnd-starosta-1", "assets/audio/dialogues/rnd-starosta-1.mp3" },
+        { "rnd-starosta-2", "assets/audio/dialogues/rnd-starosta-2.mp3" },
+        { "rnd-starosta-3", "assets/audio/dialogues/rnd-starosta-3.mp3" },
+    };
 
+    for (auto& dialogue : dialogues) {
+        audioManager.loadSound(dialogue);
+    }
+
+	//audioManager.playDialogueSound("dialogue-2");
 
 #pragma region Testování získání interaktivní item dlaždice a vložení dlaždice
     Tile& interactiveTile = get_interactive_item_tile("neco");
@@ -51,9 +82,22 @@ int main()
      sf::View defaultView;
     defaultView.reset(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
 
+    sf::Texture titleImage;
+    if (!titleImage.loadFromFile("assets/title-image.png")) {
+        std::cerr << "Error loading title image!" << std::endl;
+        return 0;
+    }
+
+	// vykreslení úvodního obrázku
+	sf::Sprite titleSprite;
+	titleSprite.setTexture(titleImage);
+    window.draw(titleSprite);
+	window.display();
+
+
     sf::Texture mapLevel01Spritesheet;
     if (!mapLevel01Spritesheet.loadFromFile("assets/map-level-01.png")) {
-        std::cerr << "Error loading character spritesheet!" << std::endl;
+        std::cerr << "Error loading maplevel-01 spritesheet!" << std::endl;
         return 0;
     }
 
@@ -65,7 +109,7 @@ int main()
 
 	DialogueManager gameDialogue(&window);
 
-	GameEventsManager gameEventsManager(gameDialogue);
+	GameEventsManager gameEventsManager(gameDialogue, audioManager);
 
     Direction playerSpriteDirection = Direction::Idle;
     sf::Vector2f playerDirection = { 0,0 };
@@ -94,7 +138,26 @@ int main()
 
     MapGenerator map01(&window, mapLevel01Spritesheet, MAP_DATA, charactersSprite);
 
-	gameDialogue.setDialogueMessage("To je dneska zase den,\nmám pocit, že to bude perný den.", 5.f);
+	// čekání na stisk klávesy pro start hry
+    sf::Event event;
+    bool startGame = false;
+
+    while (!startGame)
+    {
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                return 0;
+
+            if (event.type == sf::Event::KeyPressed)
+                startGame = true;
+        }
+    }
+
+    // startovní dialog ve hře
+	float dialogueDuration = audioManager.getSoundDuration("narrator-1");
+	audioManager.playDialogueSound("narrator-1");
+	gameDialogue.setDialogueMessage("To je dneska zase den,\nmám pocit, že se tu něco bude dít.", dialogueDuration);
 
     player.update((int)playerSpriteDirection, playerDirection);
 
