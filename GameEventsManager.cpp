@@ -10,7 +10,7 @@ extern std::vector<eventData> GAME_EVENTS = {
 		},
 		{
 			{ eventActions::playDialogueSound, "starosta-end"},
-			{ eventActions::startDialogue, "Už opravdu nemusíš pátrat, To je konec tohoto příběhu." }
+			{ eventActions::startDialogue, "Už opravdu nemusíš pátrat. To je konec tohoto příběhu." }
 		},
 		false
 	},
@@ -86,7 +86,7 @@ extern std::vector<eventData> GAME_EVENTS = {
 		},
 		{
 			{ eventActions::playDialogueSound, "helga-2"},
-			{ eventActions::startDialogue, "Jo to víš, v rybníku je toho spousta. Zkuz to znova." },
+			{ eventActions::startDialogue, "Jo to víš, v rybníce je toho spousta. Zkuz to znova." },
 			{ eventActions::eventComplete, "Helga-pokracuj-vylov" }
 		},
 		false
@@ -112,7 +112,7 @@ extern std::vector<eventData> GAME_EVENTS = {
 		},
 		{
 			{ eventActions::playDialogueSound, "starosta-2"},
-			{ eventActions::startDialogue, "Tak dcera se mi přiznala, že prsten dala svému příteli.\nTakže je vše v pořádku.\nJo a dík za vyčištění rybníka." },
+			{ eventActions::startDialogue, "Tak dcera se mi přiznala. Prsten dala svému příteli.\nTakže je vše v pořádku.\nJo a dík za vyčištění rybníka." },
 			{ eventActions::eventComplete, "Starosta-prvni informace" }
 		},
 		false
@@ -124,9 +124,9 @@ extern std::map<std::string, std::vector<RandomDialogueData>> NPC_RANDOM_DIALOGU
 	{
 		"Starosta", 
 		{
-			{"rnd-starosta-1", "Zajímá mě kdo prsten vzal."},
+			{"rnd-starosta-1", "Zajímá mě kdo ten prsten vzal!"},
 			{"rnd-starosta-2", "Předpokládám, že stále pátráš po zloději."},
-			{"rnd-starosta-3", "Zatím jsem zloděje nechytil, ale až do dostanu..."}
+			{"rnd-starosta-3", "Zatím jsem zloděje nechytil. Ale až já ho dostanu! ..."}
 		}
 		
 	},
@@ -142,7 +142,7 @@ extern std::map<std::string, std::vector<RandomDialogueData>> NPC_RANDOM_DIALOGU
 		"Barrel",
 		{
 			{"rnd-barrel-1", "Občas sem někdo hodí odpadky."},
-			{"rnd-barrel-2", "Teď tu nic tu není."},
+			{"rnd-barrel-2", "Teď tu nic není."},
 			{"rnd-barrel-3", "Jen prázdný sud, může to být bezva schovka."}
 		}
 	},
@@ -150,7 +150,7 @@ extern std::map<std::string, std::vector<RandomDialogueData>> NPC_RANDOM_DIALOGU
 		"Barrel-interactive",
 		{
 			{"rnd-barrel-1", "Občas sem někdo hodí odpadky."},
-			{"rnd-barrel-2", "Teď tu nic tu není"},
+			{"rnd-barrel-2", "Teď tu nic není"},
 			{"rnd-barrel-3", "Jen prázdný sud, může to být bezva schovka."}
 		}
 	},
@@ -242,14 +242,17 @@ void GameEventsManager::checkEvent(std::string npcName)
 
 bool GameEventsManager::isEventCompleted(std::string eventName)
 {
-	for (const auto& event : GAME_EVENTS) {
-		if (event.eventName == eventName) {
-			return event.eventCompleted;
+	bool eventStatus = false;
+	for (const auto& event : GAME_EVENTS)
+	{
+		if (event.eventName == eventName)
+		{
+			eventStatus = event.eventCompleted;
+			break;
 		}
 	}
+	return eventStatus;
 }
-
-
 
 void GameEventsManager::playDialogueSound(const std::string& name)
 {

@@ -4,7 +4,7 @@
 #include <fstream>
 //#include <vector>
 #include <string>
-static class MapJsonParse
+class MapJsonParse
 {
 public:
 

@@ -16,11 +16,18 @@ Player::Player(sf::RenderWindow* window, GameEventsManager& gameEventsManager, s
 
 void Player::update(int direction, sf::Vector2f deltaPos)
 {
-
 	// může se použít k nějakému stavu, např. pauza nebo dialog
 	if (direction == -1) {
 		m_clock.restart();
 		return;
+	}
+
+	// korekce diagonálních směrů pro animaci
+	if ((deltaPos.x == -1 && deltaPos.y == -1) || (deltaPos.x == -1 && deltaPos.y == 1)) {
+		direction = 4;
+	}
+	if ((deltaPos.x == 1 && deltaPos.y == 1) || (deltaPos.x == 1 && deltaPos.y == -1)) {
+		direction = 2;
 	}
 
 	if (direction != m_lastDirection) {
@@ -70,11 +77,6 @@ void Player::move(sf::Vector2f deltaPos)
 				m_lastColliderTile = currentTile;
 				m_gameEventsManager.checkEvent(tileGrid[row][col].name);
 			}
-			/*if (tileGrid[row][col].name == "Barrel") {
-				m_dialogue.setDialogueMessage("It's a barrel. It looks empty.");
-				checkEvent("Starosta");
-				m_isDialogueActive = true;
-			}*/
 		}
 		return;
 	} else
@@ -84,12 +86,6 @@ void Player::move(sf::Vector2f deltaPos)
 			m_lastColliderTile = sf::Vector2i(-1, -1);
 		}
 	}
-
-	/*if (GAME_AREA.contains(newPos.x, newPos.y) &&
-		GAME_AREA.contains(newPos.x + 100, newPos.y + 100))
-	{
-		m_playerPos = newPos;
-	}*/
 
 	m_isDialogueActive = false;
 	m_playerPos = newPos;

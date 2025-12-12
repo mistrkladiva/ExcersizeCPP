@@ -32,7 +32,6 @@ void AudioManager::playDialogueSound(const std::string& name)
 {
     m_sounds[name].play();
     float seconds = m_buffers[name].getDuration().asSeconds();
-	std::cout << "Playing sound " << name << " for " << seconds << " seconds." << std::endl;
 }
 
 float AudioManager::getSoundDuration(const std::string& name) {

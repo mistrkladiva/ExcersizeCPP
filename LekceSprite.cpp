@@ -82,9 +82,22 @@ int main()
      sf::View defaultView;
     defaultView.reset(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
 
+    sf::Texture titleImage;
+    if (!titleImage.loadFromFile("assets/title-image.png")) {
+        std::cerr << "Error loading title image!" << std::endl;
+        return 0;
+    }
+
+	// vykreslení úvodního obrázku
+	sf::Sprite titleSprite;
+	titleSprite.setTexture(titleImage);
+    window.draw(titleSprite);
+	window.display();
+
+
     sf::Texture mapLevel01Spritesheet;
     if (!mapLevel01Spritesheet.loadFromFile("assets/map-level-01.png")) {
-        std::cerr << "Error loading character spritesheet!" << std::endl;
+        std::cerr << "Error loading maplevel-01 spritesheet!" << std::endl;
         return 0;
     }
 
@@ -125,7 +138,26 @@ int main()
 
     MapGenerator map01(&window, mapLevel01Spritesheet, MAP_DATA, charactersSprite);
 
-	gameDialogue.setDialogueMessage("To je dneska zase den,\nmám pocit, že se tu něco bude dít.", 5.f);
+	// čekání na stisk klávesy pro start hry
+    sf::Event event;
+    bool startGame = false;
+
+    while (!startGame)
+    {
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                return 0;
+
+            if (event.type == sf::Event::KeyPressed)
+                startGame = true;
+        }
+    }
+
+    // startovní dialog ve hře
+	float dialogueDuration = audioManager.getSoundDuration("narrator-1");
+	audioManager.playDialogueSound("narrator-1");
+	gameDialogue.setDialogueMessage("To je dneska zase den,\nmám pocit, že se tu něco bude dít.", dialogueDuration);
 
     player.update((int)playerSpriteDirection, playerDirection);
 
