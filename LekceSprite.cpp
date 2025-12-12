@@ -94,6 +94,21 @@ int main()
     window.draw(titleSprite);
 	window.display();
 
+    // čekání na stisk klávesy pro start hry
+    sf::Event event;
+    bool startGame = false;
+
+    while (!startGame)
+    {
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                return 0;
+
+            if (event.type == sf::Event::KeyPressed)
+                startGame = true;
+        }
+    }
 
     sf::Texture mapLevel01Spritesheet;
     if (!mapLevel01Spritesheet.loadFromFile("assets/map-level-01.png")) {
@@ -138,21 +153,7 @@ int main()
 
     MapGenerator map01(&window, mapLevel01Spritesheet, MAP_DATA, charactersSprite);
 
-	// čekání na stisk klávesy pro start hry
-    sf::Event event;
-    bool startGame = false;
-
-    while (!startGame)
-    {
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                return 0;
-
-            if (event.type == sf::Event::KeyPressed)
-                startGame = true;
-        }
-    }
+	
 
     // startovní dialog ve hře
 	float dialogueDuration = audioManager.getSoundDuration("narrator-1");
