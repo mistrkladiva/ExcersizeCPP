@@ -113,10 +113,10 @@ extern std::vector<eventData> GAME_EVENTS = {
 		{
 			{ eventActions::playDialogueSound, "starosta-2"},
 			{ eventActions::startDialogue, "Tak dcera se mi přiznala. Prsten dala svému příteli.\nTakže je vše v pořádku.\nJo a dík za vyčištění rybníka." },
-			{ eventActions::eventComplete, "Starosta-prvni informace" }
+			{ eventActions::eventComplete, "Starosta-zaver" }
 		},
 		false
-	},
+	}
 };
 
 // Správná inicializace globální proměnné

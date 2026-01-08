@@ -77,10 +77,54 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode((int)WINDOW_WIDTH, (int)WINDOW_HEIGHT), "Simple c++ dop-down game");
     window.clear(sf::Color::Black);
+    window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
+    //window.setVerticalSyncEnabled(true);
 
      sf::View defaultView;
     defaultView.reset(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+
+	sf::Texture logoImage;
+    if (!logoImage.loadFromFile("assets/logo.png")) {
+        std::cerr << "Error loading logo image!" << std::endl;
+        return 0;
+	}
+
+	sf::Sprite logoSprite;
+	logoSprite.setTexture(logoImage);
+
+	// logo fade in
+	sf::Clock logoClock;
+	float logoFadeDuration = 2.0f; // doba trvání přechodu v sekundách
+	float durationTime = logoClock.getElapsedTime().asSeconds() + logoFadeDuration;
+	int alpha = 0;
+    while (logoClock.getElapsedTime().asSeconds() < durationTime)
+    {
+		int currentAlpha = static_cast<int>((logoClock.getElapsedTime().asSeconds() / logoFadeDuration) * 255);
+        if (currentAlpha > 255) currentAlpha = 255;
+        if (currentAlpha != alpha) {
+            alpha = currentAlpha;
+            logoSprite.setColor(sf::Color(255, 255, 255, alpha));
+            window.clear(sf::Color::Black);
+            window.draw(logoSprite);
+            window.display();
+		}
+    }
+	// logo fade out
+	logoClock.restart();
+	durationTime = logoClock.getElapsedTime().asSeconds() + logoFadeDuration;
+    while (logoClock.getElapsedTime().asSeconds() < durationTime)
+    {
+        int currentAlpha = 255 - static_cast<int>((logoClock.getElapsedTime().asSeconds() / logoFadeDuration) * 255);
+        if (currentAlpha < 0) currentAlpha = 0;
+        if (currentAlpha != alpha) {
+            alpha = currentAlpha;
+            logoSprite.setColor(sf::Color(255, 255, 255, alpha));
+            window.clear(sf::Color::Black);
+            window.draw(logoSprite);
+            window.display();
+        }
+	}
 
     sf::Texture titleImage;
     if (!titleImage.loadFromFile("assets/title-image.png")) {
@@ -106,6 +150,9 @@ int main()
                 return 0;
 
             if (event.type == sf::Event::KeyPressed)
+                startGame = true;
+
+            if (event.type == sf::Event::MouseButtonPressed)
                 startGame = true;
         }
     }
@@ -153,8 +200,6 @@ int main()
 
     MapGenerator map01(&window, mapLevel01Spritesheet, MAP_DATA, charactersSprite);
 
-	
-
     // startovní dialog ve hře
 	float dialogueDuration = audioManager.getSoundDuration("narrator-1");
 	audioManager.playDialogueSound("narrator-1");
@@ -170,6 +215,13 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
+			// vstup z myši pokud není aktivní dialog
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !gameDialogue.isDialogueActive()) {
+
+                sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+				player.startMouseController(window.mapPixelToCoords(localPosition));
+            }
+
             // vstup z klávesnice
             playerSpriteDirection = Direction::Idle;
             playerDirection = { 0,0 };
@@ -177,18 +229,22 @@ int main()
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
                 playerSpriteDirection = Direction::Left;
                 playerDirection.x = -1;
+				player.stopMouseController();
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
                 playerSpriteDirection = Direction::Right;
                 playerDirection.x = 1;
+                player.stopMouseController();
             };
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
                 playerSpriteDirection = Direction::Up;
                 playerDirection.y = -1;
+                player.stopMouseController();
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
                 playerSpriteDirection = Direction::Down;
                 playerDirection.y = 1;
+                player.stopMouseController();
             }
         }
 

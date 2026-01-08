@@ -13,8 +13,10 @@ public:
 	// TODO: vypočítat souřadnice podle gridu mapy
 	sf::Vector2f m_playerPos;
 	Player(sf::RenderWindow* window, GameEventsManager& gameEventsManager, sf::Texture& spritesheet, SpriteCharacter sprt);
-
+	void moveTo(sf::Vector2f newPos);
 	void update(int direction, sf::Vector2f deltaPos);
+	void startMouseController(sf::Vector2f target);
+	void stopMouseController();
 	void draw();
 	
 	sf::Sprite& getCurrentFrame();
@@ -35,7 +37,7 @@ private:
 	float m_frameDuration = 0.10f; // seconds per frame, nastavte podle potřeby
 	int m_lastDirection = -2; // pomocné pro zjištění změny směru
 
-	float m_playerSpeed = 3;
+	float m_playerSpeed = 4;
 
 	sf::Vector2i m_collidedTilePos;
 
@@ -48,6 +50,12 @@ private:
     void loadCharacterSprites();
 	void animation(int direction);
 	void move(sf::Vector2f deltaPos);
+
+	bool m_mouseController = false;
+	sf::Vector2f m_targetPos;
+	
+	bool isInTarget();
+	
 	bool isCollision(sf::Vector2f& playerPos);
 	sf::Vector2f getNpcPosInTileGrid(sf::Vector2i gridPos);
 };

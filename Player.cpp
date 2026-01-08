@@ -14,8 +14,45 @@ Player::Player(sf::RenderWindow* window, GameEventsManager& gameEventsManager, s
 	m_lastDirection = -2;
 }
 
+
 void Player::update(int direction, sf::Vector2f deltaPos)
 {
+
+	if (m_mouseController) {
+		// výpočet úhlu mezi hráčem a cílovou pozicí
+		float angle = std::atan2(m_targetPos.y - m_playerPos.y, m_targetPos.x - m_playerPos.x);
+		float degrees = angle * (180.0f / 3.14159f);
+
+		// určení směru na základě úhlu
+		if (degrees >= -120.f && degrees < -60.f) {
+			direction = 3; //up
+		} else if (degrees >= -60.f && degrees < 0) {
+			direction = 2; // right
+		} else if (degrees >= 0.f && degrees < 60.f) {
+			direction = 2; // right
+		} else if (degrees >= 60.f && degrees < 120.f) {
+			direction = 1; // down
+		} else if (degrees >= 120.f && degrees < 180.f) {
+			direction = 4; // left
+		} else if (degrees >= -180.f && degrees < -120.f) {
+			direction = 4; // left
+		}
+
+		sf::Vector2f mouseDeltaPos = {
+			std::cos(angle),
+			std::sin(angle)
+		};
+	
+		if (isInTarget()) {
+			direction = 0; // idle
+			m_mouseController = false;
+		}
+
+		animation(direction);
+		move(mouseDeltaPos);
+		return;
+	}
+
 	// může se použít k nějakému stavu, např. pauza nebo dialog
 	if (direction == -1) {
 		m_clock.restart();
@@ -38,8 +75,9 @@ void Player::update(int direction, sf::Vector2f deltaPos)
 
 	animation(direction);
 	move(deltaPos);
-	//m_gameEventsManager.setDialoguePosition({ m_playerPos.x, m_playerPos.y - 100.f });
 }
+
+
 
 // vykreslování hráče řeší MapGenerator přes referenci na m_currentFrame
 void Player::draw()
@@ -56,13 +94,15 @@ void Player::draw()
 /// přesun se provede pouze pokud výsledná pozice a oblast 100×100 od ní jsou uvnitř GAME_AREA.</param>
 void Player::move(sf::Vector2f deltaPos)
 {
-	// TODO: ošetřit pohyb diagonálně (normalizovat vektor) při diagonálním pohybu sprite vlevo nebo vpravo
 	sf::Vector2f newPos = {
 		m_playerPos.x + m_playerSpeed * deltaPos.x,
 		m_playerPos.y + m_playerSpeed * deltaPos.y
 	};
 
 	if (isCollision(newPos)) {
+		// pokud je kolize, zastavit mousecontroller
+		m_mouseController = false;
+
 		m_currentFrame.setPosition(m_playerPos);
 		int row = m_collidedTilePos.y;
 		int col = m_collidedTilePos.x;
@@ -88,6 +128,39 @@ void Player::move(sf::Vector2f deltaPos)
 	}
 
 	m_isDialogueActive = false;
+	m_playerPos = newPos;
+	m_currentFrame.setPosition(m_playerPos);
+}
+
+/// <summary>
+/// v případě ovládání myší nastaví cíl pohybu hráče na zadanou pozici a aktivuje režim pohybu myší.
+/// </summary>
+/// <param name="target"></param>
+void Player::startMouseController(sf::Vector2f target)
+{
+	m_mouseController = true;
+	m_targetPos = target;
+}
+
+/// <summary>
+/// pokud uživatel přestal ovládat hráče myší, deaktivuje režim pohybu myší.
+/// </summary>
+void Player::stopMouseController()
+{
+	m_mouseController = false;
+}
+
+bool Player::isInTarget()
+{
+	if(m_playerPos.x >= m_targetPos.x - 5.f && m_playerPos.x <= m_targetPos.x + 5.f &&
+		m_playerPos.y >= m_targetPos.y - 5.f && m_playerPos.y <= m_targetPos.y + 5.f) {
+		return true;
+	}
+	return false;
+}
+
+void Player::moveTo(sf::Vector2f newPos)
+{
 	m_playerPos = newPos;
 	m_currentFrame.setPosition(m_playerPos);
 }
