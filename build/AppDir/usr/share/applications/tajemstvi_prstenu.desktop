@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Tajemství prstenu
+Exec=tajemstvi_prstenu
+Icon=tajemstvi_prstenu
+Categories=Game;
+Terminal=false
+Name[cs]=tajemstvi_prstenu.desktop

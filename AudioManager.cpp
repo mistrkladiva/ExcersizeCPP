@@ -37,3 +37,11 @@ void AudioManager::playDialogueSound(const std::string& name)
 float AudioManager::getSoundDuration(const std::string& name) {
     return m_buffers[name].getDuration().asSeconds();
 }
+
+void AudioManager::stopAudio()
+{
+	m_backgroundMusic.stop();
+    for (auto& [name, sound] : m_sounds) {
+        sound.stop();
+	}
+}

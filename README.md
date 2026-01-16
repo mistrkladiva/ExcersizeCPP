@@ -1,8 +1,35 @@
-﻿# LekceSprite
+﻿# Tajemství prstenu - Hra ve stylu RPG s dlaždicovou mapou
 
-LekceSprite je jednoduchý výukový projekt napsaný v C++ s využitím knihovny SFML. Projekt slouží jako cvičení pro práci s 2D grafikou, tilemapami a základními herními mechanismy (postavy, kolize, z-indexování/Y-sort a jednoduchý systém dialogů řízený JSONem). Aplikace má formu jednoduché click & point adventury, kde se příběh a interaktivní prvky definují v externím JSON souboru.
+## Spuštění hry pro windows (Release)
+
+- Nejprve stáhněte celou složku `Game_win_x86_64` do počítače.
+- Ve stažené složce spusťte `Tajemstviprstenu.exe`.
+- Hra podporuje pouze Windows 64‑bit (x64). Spouštění na jiných platformách není oficiálně podporováno.
+
+Ujistěte se, že v `Game_win_x86_64` jsou přítomny všechny potřebné DLL (SFML) a adresář `assets` pokud nejsou integrovány do EXE.
+
+## Spuštění hry pro linux (Release)
+
+- Nejprve stáhněte celou složku `Game_linux_x86_64` do počítače.
+- Ve stažené složce spusťte `Tajemství_prstenu-x86_64.AppImage`.
+- Hra podporuje pouze linux 64‑bit (x64). Spouštění na jiných platformách není oficiálně podporováno.
+
+## Stručné použití / ovládání
+
+- Pohyb postavy: šipky (Up, Down, Left, Right)
+- Interakce: pokud je implementováno klikání, použijte levé tlačítko myši pro posun hráče.
+- Hra neobsahuje hledání cesty a vyhýbání se kolizním objektům. Proto je možné, že při použití myši hráč uvízne za objekty. V takovém případě použijte klávesy pro pohyb.
+
+## Složka pro spuštění hry
+
+- `assets/` — obrázky a data map
+- `README.md` — tento soubor
+- `ReleaseGame/` — připravená složka s bází pro spuštění na Windows (x64)
+
 
 ## Hlavní vlastnosti
+
+Hra je jednoduchý výukový projekt napsaný v C++ s využitím knihovny SFML. Projekt slouží jako cvičení pro práci s 2D grafikou, tilemapami a základními herními mechanismy (postavy, kolize, z-indexování/Y-sort a jednoduchý systém dialogů řízený JSONem). Aplikace má formu jednoduché click & point adventury, kde se příběh a interaktivní prvky definují v externím JSON souboru.
 
 - Tilemap rendering ze spritesheetu
 - Vícevrstvá mapa (spodní vrstva, překrývající objekty pro Y‑sort, horní vrstva)

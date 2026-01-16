@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# zjistí absolutní cestu ke složce AppDir
+HERE="$(dirname "$(readlink -f "$0")")"
+
+# řekne Linuxu, kde má hledat knihovny (SFML)
+export LD_LIBRARY_PATH="$HERE/usr/lib:$LD_LIBRARY_PATH"
+
+cd "$HERE/usr"
+# spustí tvůj program
+exec "$HERE/usr/bin/tajemstvi_prstenu"
+

@@ -8,43 +8,45 @@
 
 int main()
 {
+    bool gameRunning = true;
+
     if (MAP_DATA.layers.empty()) {
         std::cout << "Načítání mapy selhalo nebo mapa je prázdná." << std::endl;
         return 0;
     }
 
 	AudioManager audioManager;
-	AudioData backgroundMusicData = { "background-music", "assets/audio/background-music.ogg" };
+	AudioData backgroundMusicData = { "background-music", "./assets/audio/background-music.ogg" };
     if (!audioManager.playMusic(backgroundMusicData)) {
 		return 1;
     }
 
     std::vector<AudioData> dialogues = {
-        { "starosta-1", "assets/audio/dialogues/starosta-1.mp3" },
-        { "starosta-2", "assets/audio/dialogues/starosta-2.mp3" },
-        { "starosta-end", "assets/audio/dialogues/starosta-end.mp3" },
-        { "narrator-1", "assets/audio/dialogues/narrator-1.mp3" },
-        { "narrator-2", "assets/audio/dialogues/narrator-2.mp3" },
-        { "narrator-3", "assets/audio/dialogues/narrator-3.mp3" },
-        { "narrator-4", "assets/audio/dialogues/narrator-4.mp3" },
-        { "anna-1", "assets/audio/dialogues/anna-1.mp3" },
-        { "helga-1", "assets/audio/dialogues/helga-1.mp3" },
-        { "helga-2", "assets/audio/dialogues/helga-2.mp3" },
-        { "rnd-anna-1", "assets/audio/dialogues/rnd-anna-1.mp3" },
-        { "rnd-anna-2", "assets/audio/dialogues/rnd-anna-2.mp3" },
-        { "rnd-anna-3", "assets/audio/dialogues/rnd-anna-3.mp3" },
-        { "rnd-barrel-1", "assets/audio/dialogues/rnd-barrel-1.mp3" },
-        { "rnd-barrel-2", "assets/audio/dialogues/rnd-barrel-2.mp3" },
-        { "rnd-barrel-3", "assets/audio/dialogues/rnd-barrel-3.mp3" },
-        { "rnd-bench-1", "assets/audio/dialogues/rnd-bench-1.mp3" },
-        { "rnd-bench-2", "assets/audio/dialogues/rnd-bench-2.mp3" },
-        { "rnd-bench-3", "assets/audio/dialogues/rnd-bench-3.mp3" },
-        { "rnd-helga-1", "assets/audio/dialogues/rnd-helga-1.mp3" },
-        { "rnd-helga-2", "assets/audio/dialogues/rnd-helga-2.mp3" },
-		{ "rnd-helga-3", "assets/audio/dialogues/rnd-helga-3.mp3" },
-        { "rnd-starosta-1", "assets/audio/dialogues/rnd-starosta-1.mp3" },
-        { "rnd-starosta-2", "assets/audio/dialogues/rnd-starosta-2.mp3" },
-        { "rnd-starosta-3", "assets/audio/dialogues/rnd-starosta-3.mp3" },
+        { "starosta-1", "./assets/audio/dialogues/starosta-1.mp3" },
+        { "starosta-2", "./assets/audio/dialogues/starosta-2.mp3" },
+        { "starosta-end", "./assets/audio/dialogues/starosta-end.mp3" },
+        { "narrator-1", "./assets/audio/dialogues/narrator-1.mp3" },
+        { "narrator-2", "./assets/audio/dialogues/narrator-2.mp3" },
+        { "narrator-3", "./assets/audio/dialogues/narrator-3.mp3" },
+        { "narrator-4", "./assets/audio/dialogues/narrator-4.mp3" },
+        { "anna-1", "./assets/audio/dialogues/anna-1.mp3" },
+        { "helga-1", "./assets/audio/dialogues/helga-1.mp3" },
+        { "helga-2", "./assets/audio/dialogues/helga-2.mp3" },
+        { "rnd-anna-1", "./assets/audio/dialogues/rnd-anna-1.mp3" },
+        { "rnd-anna-2", "./assets/audio/dialogues/rnd-anna-2.mp3" },
+        { "rnd-anna-3", "./assets/audio/dialogues/rnd-anna-3.mp3" },
+        { "rnd-barrel-1", "./assets/audio/dialogues/rnd-barrel-1.mp3" },
+        { "rnd-barrel-2", "./assets/audio/dialogues/rnd-barrel-2.mp3" },
+        { "rnd-barrel-3", "./assets/audio/dialogues/rnd-barrel-3.mp3" },
+        { "rnd-bench-1", "./assets/audio/dialogues/rnd-bench-1.mp3" },
+        { "rnd-bench-2", "./assets/audio/dialogues/rnd-bench-2.mp3" },
+        { "rnd-bench-3", "./assets/audio/dialogues/rnd-bench-3.mp3" },
+        { "rnd-helga-1", "./assets/audio/dialogues/rnd-helga-1.mp3" },
+        { "rnd-helga-2", "./assets/audio/dialogues/rnd-helga-2.mp3" },
+		{ "rnd-helga-3", "./assets/audio/dialogues/rnd-helga-3.mp3" },
+        { "rnd-starosta-1", "./assets/audio/dialogues/rnd-starosta-1.mp3" },
+        { "rnd-starosta-2", "./assets/audio/dialogues/rnd-starosta-2.mp3" },
+        { "rnd-starosta-3", "./assets/audio/dialogues/rnd-starosta-3.mp3" },
     };
 
     for (auto& dialogue : dialogues) {
@@ -85,7 +87,7 @@ int main()
     defaultView.reset(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
 
 	sf::Texture logoImage;
-    if (!logoImage.loadFromFile("assets/logo.png")) {
+    if (!logoImage.loadFromFile("./assets/logo.png")) {
         std::cerr << "Error loading logo image!" << std::endl;
         return 0;
 	}
@@ -127,7 +129,7 @@ int main()
 	}
 
     sf::Texture titleImage;
-    if (!titleImage.loadFromFile("assets/title-image.png")) {
+    if (!titleImage.loadFromFile("./assets/title-image.png")) {
         std::cerr << "Error loading title image!" << std::endl;
         return 0;
     }
@@ -158,13 +160,13 @@ int main()
     }
 
     sf::Texture mapLevel01Spritesheet;
-    if (!mapLevel01Spritesheet.loadFromFile("assets/map-level-01.png")) {
+    if (!mapLevel01Spritesheet.loadFromFile("./assets/map-level-01.png")) {
         std::cerr << "Error loading maplevel-01 spritesheet!" << std::endl;
         return 0;
     }
 
     sf::Texture charactersSpritesheet;
-	if (!charactersSpritesheet.loadFromFile("assets/characters.png")) {
+	if (!charactersSpritesheet.loadFromFile("./assets/characters.png")) {
 		std::cerr << "Error loading character spritesheet!" << std::endl;
         return 0;
     }
@@ -207,46 +209,59 @@ int main()
 
     player.update((int)playerSpriteDirection, playerDirection);
 
-    while (window.isOpen())
+    while (gameRunning && window.isOpen())
     {
         sf::Event event;
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
+                gameRunning = false;
+                audioManager.stopAudio();
                 window.close();
-
-			// vstup z myši pokud není aktivní dialog
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !gameDialogue.isDialogueActive()) {
-
-                sf::Vector2i localPosition = sf::Mouse::getPosition(window);
-				player.startMouseController(window.mapPixelToCoords(localPosition));
-            }
-
-            // vstup z klávesnice
-            playerSpriteDirection = Direction::Idle;
-            playerDirection = { 0,0 };
-
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-                playerSpriteDirection = Direction::Left;
-                playerDirection.x = -1;
-				player.stopMouseController();
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-                playerSpriteDirection = Direction::Right;
-                playerDirection.x = 1;
-                player.stopMouseController();
-            };
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-                playerSpriteDirection = Direction::Up;
-                playerDirection.y = -1;
-                player.stopMouseController();
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-                playerSpriteDirection = Direction::Down;
-                playerDirection.y = 1;
-                player.stopMouseController();
+                return 0;
             }
         }
+
+        /*if (!window.isOpen() || !gameRunning)
+        {
+			audioManager.stopAudio();
+			std::cout << "Game closed by user." << std::endl;
+            break;
+        }*/
+            
+        // vstup z myši pokud není aktivní dialog
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !gameDialogue.isDialogueActive()) {
+
+            sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+            player.startMouseController(window.mapPixelToCoords(localPosition));
+        }
+
+        // vstup z klávesnice
+        playerSpriteDirection = Direction::Idle;
+        playerDirection = { 0,0 };
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            playerSpriteDirection = Direction::Left;
+            playerDirection.x = -1;
+            player.stopMouseController();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+            playerSpriteDirection = Direction::Right;
+            playerDirection.x = 1;
+            player.stopMouseController();
+        };
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            playerSpriteDirection = Direction::Up;
+            playerDirection.y = -1;
+            player.stopMouseController();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            playerSpriteDirection = Direction::Down;
+            playerDirection.y = 1;
+            player.stopMouseController();
+        }
+
 
         window.clear(sf::Color::Black);
         defaultView.setCenter(sf::Vector2f(player.m_playerPos));
@@ -265,7 +280,7 @@ int main()
         npc3.update();
         map01.drawMap();
         player.draw();
-		// vykresluje jen kolizní obdélník
+		// vykresluje jen kontrolní kolizní obdélník
 		npc1.draw();
 		npc2.draw();
         npc3.draw();
@@ -273,4 +288,7 @@ int main()
 		gameDialogue.draw();
         window.display();
     }
+
+    std::cout << "Loop is end." << std::endl;
+    return 0;
 }

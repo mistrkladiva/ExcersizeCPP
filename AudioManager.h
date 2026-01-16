@@ -13,6 +13,7 @@ class AudioManager
 		void loadSound(const AudioData& audioData);
 		void playDialogueSound(const std::string& name);
 		float getSoundDuration(const std::string& name);
+		void stopAudio();
 
 private: 
 

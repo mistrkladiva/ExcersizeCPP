@@ -1,7 +1,7 @@
 #include "GameEventsManager.h"
 
 
-extern std::vector<eventData> GAME_EVENTS = {
+std::vector<eventData> GAME_EVENTS = {
 	{
 		"Starosta-konec",
 		{
@@ -120,7 +120,7 @@ extern std::vector<eventData> GAME_EVENTS = {
 };
 
 // Správná inicializace globální proměnné
-extern std::map<std::string, std::vector<RandomDialogueData>> NPC_RANDOM_DIALOGUES = {
+std::map<std::string, std::vector<RandomDialogueData>> NPC_RANDOM_DIALOGUES = {
 	{
 		"Starosta", 
 		{

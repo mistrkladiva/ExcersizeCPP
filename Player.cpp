@@ -260,8 +260,8 @@ sf::Sprite& Player::getCurrentFrame()
 sf::Vector2f Player::getNpcPosInTileGrid(sf::Vector2i gridPos)
 {
 	// výpočet umístění npc na střed dlaždice mřížky
-	float centerX = std::floorf(((float)gridPos.x * MAP_DATA.tileSize) + (MAP_DATA.tileSize / 2));
-	float centerY = std::floorf(((float)gridPos.y * MAP_DATA.tileSize) + (MAP_DATA.tileSize / 2));
+	float centerX = std::floor(((float)gridPos.x * MAP_DATA.tileSize) + (MAP_DATA.tileSize / 2));
+	float centerY = std::floor(((float)gridPos.y * MAP_DATA.tileSize) + (MAP_DATA.tileSize / 2));
 
 	return sf::Vector2f(centerX, centerY);;
 }
